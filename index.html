@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Nandi Varun Reddy - Computer Science and Cybersecurity Applicant Portfolio" />
+    <title>Nandi Varun Reddy | CS & Cybersecurity Portfolio</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="is-gated">
+    <div class="language-gate" id="languageGate" role="dialog" aria-modal="true">
+      <div class="gate-panel">
+        <p class="gate-kicker">Language Preference / 언어 선택</p>
+        <h1>Choose Language<span class="gate-title-ko">언어 선택</span></h1>
+        <p class="gate-subtitle">Computer Science & Cybersecurity Applicant Portfolio<span>컴퓨터공학 및 사이버보안 지원자 포트폴리오</span></p>
+        <div class="gate-actions" aria-label="Language selection">
+          <button class="gate-button" type="button" data-language-choice="en">English</button>
+          <button class="gate-button" type="button" data-language-choice="ko">한국어</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
+
+    <header class="topbar" id="siteHeader">
+      <a class="brand" href="#home" aria-label="Nandi Varun Reddy home">
+        <span>Nandi Varun Reddy</span>
+        <i aria-hidden="true">CS</i>
+      </a>
+      <nav class="site-nav" id="siteNav" aria-label="Main navigation">
+        <a href="#home" data-i18n="navHome">Home</a>
+        <a href="#about" data-i18n="navAbout">About</a>
+        <a href="#education" data-i18n="navEducation">Education</a>
+        <a href="#projects" data-i18n="navProjects">Projects</a>
+        <a href="#certificates" data-i18n="navCertificates">Certificates</a>
+        <a href="#skills" data-i18n="navSkills">Skills</a>
+        <a href="#art" data-i18n="navArt">Art</a>
+        <a href="#goals" data-i18n="navGoals">Goals</a>
+        <a href="#contact" data-i18n="navContact">Contact</a>
+      </nav>
+      <div class="nav-actions">
+        <div class="language-switch" aria-label="Language switch">
+          <button type="button" data-language-choice="en">EN</button>
+          <span>/</span>
+          <button type="button" data-language-choice="ko">한국어</button>
+        </div>
+        <button class="contact-pill email-display" type="button" data-i18n="buttonEmail" aria-label="Email address: 2008.varunreddy@gmail.com">2008.varunreddy@gmail.com</button>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open navigation"><span></span><span></span></button>
+      </div>
+    </header>
+
+    <main class="site-main" id="siteMain">
+      <section class="scene hero-scene" id="home" data-section>
+        <div class="scene-line" aria-hidden="true"></div>
+        <div class="scene-inner hero-layout">
+          <div class="hero-copy reveal">
+            <p class="chapter-label" data-i18n="heroEyebrow">Admissions Portfolio</p>
+            <h1 class="hero-title">
+              <span data-i18n="heroNameTop">Nandi Varun</span>
+              <span data-i18n="heroNameBottom">Reddy</span>
+            </h1>
+            <p class="hero-role" data-i18n="heroRole">Computer Science & Cybersecurity Applicant</p>
+            <p class="hero-tags" data-i18n="heroTags">Ethical Hacking • Network Security • Python Projects</p>
+            <div class="hero-actions">
+              <a class="button primary" href="#projects" data-i18n="buttonProjects">View Projects</a>
+              <a class="button" href="#certificates" data-i18n="buttonCertificates">View Certificates</a>
+              <a class="button" href="https://github.com/iam-varun2008" target="_blank" rel="noreferrer" data-i18n="buttonGithub">GitHub</a>
+            </div>
+          </div>
+          <div class="hero-media-wrap reveal" data-float="0.08">
+            <div class="blade-panel">
+              <div class="media-slot hero-media" data-src="public/images/profile-photo.jpg" data-fallback-src="public/images/cybersecurity-abstract.png" data-alt="Light cybersecurity portfolio visual">
+                <img src="public/images/cybersecurity-abstract.png" alt="Light cybersecurity portfolio visual" />
+              </div>
+            </div>
+            <p class="hero-intro" data-i18n="heroIntro">I am a Computer Science applicant from India with a strong interest in cybersecurity, ethical hacking, network security, and practical Python-based security tools.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene story-scene" id="about" data-section>
+        <div class="scene-inner story-layout">
+          <div class="story-heading reveal">
+            <p class="chapter-label">Story</p>
+            <h2 data-i18n="aboutHeadline">Protecting privacy, systems, and people online.</h2>
+          </div>
+          <div class="story-card reveal" data-float="0.04">
+            <p data-i18n="aboutText">I am a student from Telangana, India, interested in Computer Science and cybersecurity. My interest grew from understanding how digital systems can protect privacy, prevent attacks, and keep people safe online.</p>
+            <div class="trait-grid">
+              <span data-i18n="traitResponsible">Responsible</span>
+              <span data-i18n="traitLearning">Self-learning</span>
+              <span data-i18n="traitCyber">Cybersecurity interest</span>
+              <span data-i18n="traitMath">Mathematics strength</span>
+              <span data-i18n="traitTutoring">Tutoring classmates</span>
+              <span data-i18n="traitArt">Art hobby</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene education-scene" id="education" data-section>
+        <div class="scene-inner">
+          <div class="split-title reveal">
+            <p class="chapter-label" data-i18n="educationKicker">Education</p>
+            <h2 data-i18n="educationTitle">Academic Record</h2>
+            <p data-i18n="educationIntro">Telangana State Board, India. Scores are shown without uploading private marks memos publicly.</p>
+          </div>
+          <div class="score-track">
+            <article class="score-card reveal"><span data-i18n="class10">Class 10</span><strong>9.5 CGPA</strong><p data-i18n="boardTelangana">Telangana State Board</p></article>
+            <article class="score-card reveal"><span data-i18n="class11">Class 11</span><strong>461/470</strong><p>98% • <span data-i18n="mpc">MPC: Mathematics, Physics, Chemistry</span></p></article>
+            <article class="score-card reveal"><span data-i18n="class12">Class 12</span><strong>979/1000</strong><p>97.9% • <span data-i18n="mpc">MPC: Mathematics, Physics, Chemistry</span></p></article>
+          </div>
+          <div class="section-meta reveal"><span data-i18n="educationBoard">Board: Telangana State Board</span><span data-i18n="educationCountry">Country: India</span></div>
+        </div>
+      </section>
+
+      <section class="scene projects-scene" id="projects" data-section>
+        <div class="scene-inner projects-layout">
+          <div class="split-title reveal">
+            <p class="chapter-label" data-i18n="projectsKicker">Projects</p>
+            <h2 data-i18n="projectsTitle">Security tools with ethical scope.</h2>
+          </div>
+          <div class="project-showcase">
+            <article class="project-feature reveal">
+              <div class="project-text">
+                <p class="project-index">01</p>
+                <p class="project-type" data-i18n="projectOneType">Defensive Security Project • Python</p>
+                <h3 data-i18n="projectOneTitle">Log Analyzer & Threat Detector</h3>
+                <p data-i18n="projectOneDescription">A Python-based tool that analyzes Apache-style log files and identifies suspicious patterns such as repeated IP activity, admin access attempts, unusual status codes, and repeated failed requests.</p>
+                <div class="project-actions"><a class="button small primary" href="https://github.com/iam-varun2008/Log-Analyzer-and-Threat-Detector" target="_blank" rel="noreferrer" data-i18n="buttonGithub">GitHub</a><a class="button small" href="public/projects/log-analyzer-demo.mp4" target="_blank" rel="noreferrer" data-i18n="buttonDemo">View Demo</a></div>
+              </div>
+              <div class="project-media-strip project-gallery" data-float="0.05" aria-label="Log Analyzer screenshots">
+                <figure class="media-figure">
+                  <div class="media-slot report-preview" data-src="public/projects/log-analyzer-structure.png" data-alt="Project structure showing Python scripts, sample logs, and generated reports" data-fallback="log-report"></div>
+                  <figcaption data-i18n="logMediaStructureCaption">Project structure showing the Python scripts, sample logs, and generated reports.</figcaption>
+                </figure>
+                <figure class="media-figure">
+                  <div class="media-slot terminal-preview" data-src="public/projects/log-analyzer-terminal.png" data-alt="Running the log analyzer on an Apache-style sample log file" data-fallback="log-terminal"></div>
+                  <figcaption data-i18n="logMediaRunCaption">Running the log analyzer on an Apache-style sample log file.</figcaption>
+                </figure>
+                <figure class="media-figure">
+                  <div class="media-slot terminal-preview" data-src="public/projects/log-analyzer-results.png" data-alt="Log analyzer terminal results showing suspicious pattern summary" data-fallback="log-terminal"></div>
+                  <figcaption data-i18n="logMediaResultsCaption">The tool identifies suspicious patterns from the log file and summarizes possible risks.</figcaption>
+                </figure>
+                <figure class="media-figure">
+                  <div class="media-slot report-preview" data-src="public/projects/log-analyzer-report.png" data-alt="Generated report summarizing suspicious activity and security observations" data-fallback="log-report"></div>
+                  <figcaption data-i18n="logMediaReportCaption">Generated report summarizing suspicious activity and useful security observations.</figcaption>
+                </figure>
+              </div>
+            </article>
+            <article class="project-feature reveal reverse">
+              <div class="project-text">
+                <p class="project-index">02</p>
+                <p class="project-type" data-i18n="projectTwoType">Offensive Security / Authorized Testing Project • Python</p>
+                <h3 data-i18n="projectTwoTitle">Network Port Scanner & Basic Vulnerability Risk Reporter</h3>
+                <p data-i18n="projectTwoDescription">A Python-based educational network scanning tool that checks open ports, identifies basic services, assigns simple risk levels, and provides beginner-friendly recommendations for authorized testing environments.</p>
+                <div class="project-actions"><a class="button small primary" href="https://github.com/iam-varun2008/port-vulnerability-scanner" target="_blank" rel="noreferrer" data-i18n="buttonGithub">GitHub</a><a class="button small" href="public/projects/port-scanner-demo.mp4" target="_blank" rel="noreferrer" data-i18n="buttonDemo" data-i18n-title="portDemoCaption">View Demo</a></div><p class="demo-caption" data-i18n="portDemoCaption">Short demo showing target input, authorized localhost scanning, terminal output, and saved report generation.</p>
+              </div>
+              <div class="project-media-strip project-gallery" data-float="0.05" aria-label="Port Scanner screenshots">
+                <figure class="media-figure">
+                  <div class="media-slot report-preview" data-src="public/projects/port-scanner-structure.png" data-alt="Project structure showing target validation, port scanning, risk analysis, and report generation modules" data-fallback="scan-report"></div>
+                  <figcaption data-i18n="portMediaStructureCaption">Project structure showing separate modules for target validation, port scanning, risk analysis, and report generation.</figcaption>
+                </figure>
+                <figure class="media-figure">
+                  <div class="media-slot terminal-preview" data-src="public/projects/port-scanner-terminal.png" data-alt="Running the scanner on localhost in an authorized testing environment" data-fallback="scan-terminal"></div>
+                  <figcaption data-i18n="portMediaRunCaption">Enter target IP address: 127.0.0.1. Running the scanner on localhost in an authorized testing environment.</figcaption>
+                </figure>
+                <figure class="media-figure">
+                  <div class="media-slot terminal-preview" data-src="public/projects/port-scanner-results.png" data-alt="Terminal output showing detected open ports, risk levels, and recommendations" data-fallback="scan-terminal"></div>
+                  <figcaption data-i18n="portMediaResultsCaption">Terminal output showing detected open ports, basic risk levels, and security recommendations.</figcaption>
+                </figure>
+                <figure class="media-figure">
+                  <div class="media-slot report-preview" data-src="public/projects/port-scanner-report.png" data-alt="Generated scan report with target summary, open ports, risks, and recommendations" data-fallback="scan-report"></div>
+                  <figcaption data-i18n="portMediaReportCaption">Generated scan report containing the target summary, open ports, possible risks, and recommendations.</figcaption>
+                </figure>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene certificates-scene" id="certificates" data-section>
+        <div class="scene-inner certificates-layout">
+          <div class="huge-side reveal"><p class="chapter-label" data-i18n="certificatesKicker">Certificates</p><h2 data-i18n="certificatesTitle">Completed learning milestones.</h2></div>
+          <div class="certificate-stack reveal">
+            <article><span>CS50P</span><h3 data-i18n="certCs50Title">Harvard CS50’s Introduction to Programming with Python</h3><p data-i18n="statusCompleted">Status: Completed</p><div><a href="public/certificates/cs50p-cert.pdf" target="_blank" rel="noreferrer" data-i18n="viewCertificate">View Certificate</a></div></article>
+            <article><span>TryHackMe</span><h3 data-i18n="certThmTitle">Pre Security Path</h3><p data-i18n="statusCompleted">Status: Completed</p><div><a href="public/certificates/tryhackme-pre-security.pdf" target="_blank" rel="noreferrer" data-i18n="viewCertificate">View Certificate</a></div></article>
+            <article class="ielts-upload-card"><span>IELTS</span><h3 data-i18n="certIeltsTitle">IELTS Academic</h3><p data-i18n="statusPending">Status: Add certificate later</p><div><a href="#" id="ieltsViewLink" class="disabled-link" data-i18n="viewCertificate" aria-disabled="true">View Certificate</a><label class="certificate-upload-button" for="ieltsUploadInput" id="ieltsUploadButton" role="button" tabindex="0" data-i18n="addIeltsCertificate">Add IELTS Certificate</label><input id="ieltsUploadInput" type="file" accept=".pdf,application/pdf,image/*" hidden /></div><p class="upload-note" id="ieltsUploadName" data-i18n="ieltsLaterNote">Choose a PDF or image later to preview it locally.</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene skills-scene" id="skills" data-section>
+        <div class="scene-inner">
+          <div class="split-title reveal"><p class="chapter-label" data-i18n="skillsKicker">Skills</p><h2 data-i18n="skillsTitle">Honest, developing technical strengths.</h2></div>
+          <div class="skills-ribbon">
+            <article class="skill-card reveal"><h3 data-i18n="skillProgramming">Programming</h3><p>Python, basic JavaScript, basic TypeScript, GitHub</p></article>
+            <article class="skill-card reveal"><h3 data-i18n="skillCybersecurity">Cybersecurity</h3><p data-i18n="skillCybersecurityList">Log analysis, basic network scanning, port scanning concepts, Linux basics, Windows basics, TryHackMe labs</p></article>
+            <article class="skill-card reveal"><h3 data-i18n="skillCs">Computer Science</h3><p data-i18n="skillCsList">Problem solving, file handling, regex basics, CLI tools, data handling</p></article>
+            <article class="skill-card reveal"><h3 data-i18n="skillSoft">Soft Skills</h3><p data-i18n="skillSoftList">Self-learning, discipline, responsibility, peer tutoring, communication</p></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene art-scene" id="art" data-section>
+        <div class="scene-inner art-layout">
+          <div class="art-copy reveal"><p class="chapter-label" data-i18n="artKicker">Art / Portraits</p><h2 data-i18n="artTitle">Realistic Graphite Portraits</h2><p data-i18n="artText">Outside academics, I practice realistic graphite portrait drawing. It has helped me build patience, attention to detail, and discipline, which also support my approach to programming and cybersecurity.</p></div>
+          <div class="floating-gallery">
+            <div class="media-slot art-piece tall reveal" data-src="public/art/portrait-1.jpg" data-alt="Graphite portrait 1" data-fallback="portrait" data-float="0.04"></div>
+            <div class="media-slot art-piece wide reveal" data-src="public/art/portrait-2.jpg" data-alt="Graphite portrait 2" data-fallback="portrait" data-float="0.09"></div>
+            <div class="media-slot art-piece small reveal" data-src="public/art/portrait-3.jpg" data-alt="Graphite portrait 3" data-fallback="portrait" data-float="0.06"></div>
+            <div class="media-slot art-piece mid reveal" data-src="public/art/portrait-4.jpg" data-alt="Graphite portrait 4" data-fallback="portrait" data-float="0.03"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="scene goals-scene" id="goals" data-section>
+        <div class="scene-inner goals-layout">
+          <p class="chapter-label reveal" data-i18n="goalsKicker">Goals</p>
+          <h2 class="goals-title reveal" data-i18n="goalsTitle">Academic and Career Goals</h2>
+          <div class="goal-copy reveal"><p data-i18n="goalsText">My goal is to study Computer Science with a focus on cybersecurity, network security, cryptography, and ethical hacking. In the long term, I want to work in cybersecurity as an ethical hacker or penetration tester, helping organizations find and fix weaknesses before they can be misused.</p><p class="korea-note" data-i18n="goalsKorea">I am also learning Korean basics and hope to improve my language ability while studying.</p></div>
+        </div>
+      </section>
+
+      <section class="scene contact-scene" id="contact" data-section>
+        <div class="scene-inner contact-layout">
+          <div class="footer-brand reveal"><span>Nandi Varun Reddy</span><p data-i18n="footerRole">Computer Science & Cybersecurity Applicant</p></div>
+          <nav class="footer-links reveal" aria-label="Footer navigation">
+            <a href="#home" data-i18n="navHome">Home</a><a href="#projects" data-i18n="navProjects">Projects</a><a href="#education" data-i18n="navEducation">Education</a><a href="#certificates" data-i18n="navCertificates">Certificates</a><a href="#art" data-i18n="navArt">Art</a><a href="#goals" data-i18n="navGoals">Goals</a>
+          </nav>
+          <div class="contact-card reveal" data-float="0.04"><h2 data-i18n="contactTitle">Let’s connect.</h2><button class="contact-link-button email-display" type="button" data-i18n="contactEmail" aria-label="Email address: 2008.varunreddy@gmail.com">2008.varunreddy@gmail.com</button><a href="https://github.com/iam-varun2008" target="_blank" rel="noreferrer">GitHub</a></div>
+        </div>
+      </section>
+    </main>
+
+
+    <div class="image-lightbox" id="imageLightbox" role="dialog" aria-modal="true" aria-hidden="true" data-i18n-label="imagePreviewTitle">
+      <button class="lightbox-close" id="lightboxClose" type="button" data-i18n-label="closeImageViewer" data-i18n-title="closeImageViewer">×</button>
+      <div class="lightbox-shell" role="document">
+        <img id="lightboxImage" alt="" />
+        <p id="lightboxCaption"></p>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
+
+
+
