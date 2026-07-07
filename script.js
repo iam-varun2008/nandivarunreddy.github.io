@@ -614,7 +614,7 @@ function setupInteractiveGlow() {
 }
 
 function setupPortfolioCursor() {
-  if (!window.matchMedia("(pointer: fine)").matches) return;
+  if (!window.matchMedia("(any-pointer: fine)").matches) return;
 
   const cursor = document.createElement("div");
   const ring = document.createElement("div");
@@ -650,9 +650,12 @@ function setupPortfolioCursor() {
   window.addEventListener("pointerleave", () => document.body.classList.add("cursor-hidden"));
   window.addEventListener("pointerenter", () => document.body.classList.remove("cursor-hidden"));
 
-  document.querySelectorAll(hoverSelector).forEach((element) => {
-    element.addEventListener("pointerenter", () => document.body.classList.add("cursor-hovering"));
-    element.addEventListener("pointerleave", () => document.body.classList.remove("cursor-hovering"));
+  document.addEventListener("pointerover", (event) => {
+    if (event.target.closest(hoverSelector)) document.body.classList.add("cursor-hovering");
+  });
+
+  document.addEventListener("pointerout", (event) => {
+    if (event.target.closest(hoverSelector)) document.body.classList.remove("cursor-hovering");
   });
 }
 

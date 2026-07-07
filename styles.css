@@ -2961,7 +2961,7 @@ body:not(.is-gated) .certificate-upload-button {
 }
 
 /* Glass cursor tuned for the original portfolio background */
-@media (pointer: fine) {
+@media (any-pointer: fine) {
   body.has-custom-cursor,
   body.has-custom-cursor a,
   body.has-custom-cursor button,
@@ -3043,12 +3043,5 @@ body:not(.is-gated) .certificate-upload-button {
   body.cursor-hidden .portfolio-cursor,
   body.cursor-hidden .portfolio-cursor-ring {
     opacity: 0;
-  }
-}
-
-@media (pointer: coarse) {
-  .portfolio-cursor,
-  .portfolio-cursor-ring {
-    display: none;
   }
 }
