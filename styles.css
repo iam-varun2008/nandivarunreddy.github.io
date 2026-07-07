@@ -2959,3 +2959,96 @@ body:not(.is-gated) .certificate-upload-button {
   20% { opacity: 1; }
   100% { transform: translateX(-115%); opacity: 0; }
 }
+
+/* Glass cursor tuned for the original portfolio background */
+@media (pointer: fine) {
+  body.has-custom-cursor,
+  body.has-custom-cursor a,
+  body.has-custom-cursor button,
+  body.has-custom-cursor .interactive-glow,
+  body.has-custom-cursor .is-lightbox-trigger,
+  body.has-custom-cursor .lightbox-close {
+    cursor: none;
+  }
+
+  .portfolio-cursor,
+  .portfolio-cursor-ring {
+    position: fixed;
+    left: 0;
+    top: 0;
+    border-radius: 999px;
+    pointer-events: none;
+    transform: translate3d(-50%, -50%, 0);
+    z-index: 9999;
+    opacity: 1;
+  }
+
+  .portfolio-cursor {
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(135deg, #7be8ff, #ffd98a);
+    box-shadow:
+      0 0 18px rgba(123, 232, 255, 0.8),
+      0 0 34px rgba(255, 217, 138, 0.32);
+    mix-blend-mode: screen;
+    transition: width 180ms ease, height 180ms ease, opacity 180ms ease;
+  }
+
+  .portfolio-cursor-ring {
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(123, 232, 255, 0.48);
+    background:
+      radial-gradient(circle at 36% 34%, rgba(255, 255, 255, 0.2), transparent 32%),
+      radial-gradient(circle at 68% 66%, rgba(255, 217, 138, 0.24), transparent 44%),
+      rgba(123, 232, 255, 0.06);
+    box-shadow:
+      0 0 28px rgba(123, 232, 255, 0.22),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(6px) saturate(1.25);
+    transition:
+      width 220ms ease,
+      height 220ms ease,
+      border-color 220ms ease,
+      background 220ms ease,
+      box-shadow 220ms ease,
+      transform 140ms ease,
+      opacity 180ms ease;
+  }
+
+  body.cursor-hovering .portfolio-cursor {
+    width: 8px;
+    height: 8px;
+    background: #ffffff;
+  }
+
+  body.cursor-hovering .portfolio-cursor-ring {
+    width: 64px;
+    height: 64px;
+    border-color: rgba(255, 217, 138, 0.66);
+    background:
+      radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.24), transparent 30%),
+      radial-gradient(circle at 68% 66%, rgba(184, 132, 255, 0.28), transparent 44%),
+      rgba(123, 232, 255, 0.1);
+    box-shadow:
+      0 0 42px rgba(123, 232, 255, 0.34),
+      0 0 70px rgba(255, 217, 138, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  }
+
+  body.cursor-pressed .portfolio-cursor-ring {
+    transform: translate3d(-50%, -50%, 0) scale(0.82);
+  }
+
+  body.cursor-hidden .portfolio-cursor,
+  body.cursor-hidden .portfolio-cursor-ring {
+    opacity: 0;
+  }
+}
+
+@media (pointer: coarse) {
+  .portfolio-cursor,
+  .portfolio-cursor-ring {
+    display: none;
+  }
+}

@@ -613,6 +613,49 @@ function setupInteractiveGlow() {
   });
 }
 
+function setupPortfolioCursor() {
+  if (!window.matchMedia("(pointer: fine)").matches) return;
+
+  const cursor = document.createElement("div");
+  const ring = document.createElement("div");
+  cursor.className = "portfolio-cursor";
+  ring.className = "portfolio-cursor-ring";
+  cursor.setAttribute("aria-hidden", "true");
+  ring.setAttribute("aria-hidden", "true");
+  document.body.append(cursor, ring);
+  document.body.classList.add("has-custom-cursor");
+
+  const moveCursor = (event) => {
+    const x = `${event.clientX}px`;
+    const y = `${event.clientY}px`;
+    cursor.style.left = x;
+    cursor.style.top = y;
+    ring.style.left = x;
+    ring.style.top = y;
+  };
+
+  const hoverSelector = [
+    "a",
+    "button",
+    ".interactive-glow",
+    ".media-slot",
+    ".art-piece",
+    ".is-lightbox-trigger",
+    ".lightbox-close"
+  ].join(",");
+
+  window.addEventListener("pointermove", moveCursor, { passive: true });
+  window.addEventListener("pointerdown", () => document.body.classList.add("cursor-pressed"));
+  window.addEventListener("pointerup", () => document.body.classList.remove("cursor-pressed"));
+  window.addEventListener("pointerleave", () => document.body.classList.add("cursor-hidden"));
+  window.addEventListener("pointerenter", () => document.body.classList.remove("cursor-hidden"));
+
+  document.querySelectorAll(hoverSelector).forEach((element) => {
+    element.addEventListener("pointerenter", () => document.body.classList.add("cursor-hovering"));
+    element.addEventListener("pointerleave", () => document.body.classList.remove("cursor-hovering"));
+  });
+}
+
 function updateProjectMotion() {
   const viewportHeight = window.innerHeight || 1;
   document.querySelectorAll(".project-feature").forEach((card, index) => {
@@ -672,6 +715,7 @@ setupIeltsUpload();
 setupNewTabLinks();
 setupImageLightbox();
 setupArtUploads();
+setupPortfolioCursor();
 setupInteractiveGlow();
 updateScrollEffects();
 
