@@ -2984,30 +2984,30 @@ body:not(.is-gated) .certificate-upload-button {
   }
 
   .portfolio-cursor {
-    width: 14px;
-    height: 14px;
-    border: 2px solid rgba(4, 8, 12, 0.95);
-    background: #ffffff;
+    width: 16px;
+    height: 16px;
+    border: 3px solid rgba(3, 5, 8, 0.98);
+    background: #ff35df;
     box-shadow:
-      0 0 0 3px rgba(123, 232, 255, 0.42),
-      0 0 24px rgba(123, 232, 255, 0.88),
-      0 0 42px rgba(255, 217, 138, 0.34);
+      0 0 0 2px rgba(255, 255, 255, 0.96),
+      0 0 24px rgba(255, 53, 223, 0.95),
+      0 0 52px rgba(255, 53, 223, 0.46),
+      0 0 74px rgba(123, 232, 255, 0.28);
     transition: width 180ms ease, height 180ms ease, opacity 180ms ease, border-color 180ms ease;
   }
 
   .portfolio-cursor-ring {
-    width: 46px;
-    height: 46px;
-    border: 2px solid rgba(255, 255, 255, 0.72);
+    width: 52px;
+    height: 52px;
+    border: 2px solid rgba(255, 53, 223, 0.92);
     background:
-      radial-gradient(circle at 36% 34%, rgba(255, 255, 255, 0.22), transparent 34%),
-      radial-gradient(circle at 68% 66%, rgba(255, 217, 138, 0.22), transparent 45%),
-      rgba(5, 12, 18, 0.18);
+      radial-gradient(circle at 50% 50%, rgba(255, 53, 223, 0.18), transparent 52%),
+      rgba(3, 5, 8, 0.12);
     box-shadow:
-      0 0 0 1px rgba(4, 8, 12, 0.5),
-      0 0 34px rgba(123, 232, 255, 0.34),
-      0 0 58px rgba(255, 217, 138, 0.16),
-      inset 0 1px 0 rgba(255, 255, 255, 0.24);
+      0 0 0 2px rgba(255, 255, 255, 0.58),
+      0 0 0 4px rgba(3, 5, 8, 0.46),
+      0 0 38px rgba(255, 53, 223, 0.42),
+      0 0 72px rgba(255, 217, 138, 0.18);
     backdrop-filter: blur(6px) saturate(1.25);
     transition:
       width 220ms ease,
@@ -3020,25 +3020,24 @@ body:not(.is-gated) .certificate-upload-button {
   }
 
   body.cursor-hovering .portfolio-cursor {
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     border-color: rgba(2, 4, 6, 0.98);
-    background: #fff9e6;
+    background: #ffffff;
   }
 
   body.cursor-hovering .portfolio-cursor-ring {
-    width: 72px;
-    height: 72px;
-    border-color: rgba(255, 255, 255, 0.9);
+    width: 78px;
+    height: 78px;
+    border-color: rgba(255, 53, 223, 1);
     background:
-      radial-gradient(circle at 34% 30%, rgba(255, 255, 255, 0.3), transparent 31%),
-      radial-gradient(circle at 68% 66%, rgba(184, 132, 255, 0.34), transparent 45%),
-      rgba(123, 232, 255, 0.16);
+      radial-gradient(circle at 50% 50%, rgba(255, 53, 223, 0.22), transparent 54%),
+      rgba(3, 5, 8, 0.16);
     box-shadow:
-      0 0 0 1px rgba(4, 8, 12, 0.45),
-      0 0 48px rgba(123, 232, 255, 0.48),
-      0 0 86px rgba(255, 217, 138, 0.26),
-      inset 0 1px 0 rgba(255, 255, 255, 0.28);
+      0 0 0 2px rgba(255, 255, 255, 0.72),
+      0 0 0 5px rgba(3, 5, 8, 0.5),
+      0 0 58px rgba(255, 53, 223, 0.58),
+      0 0 98px rgba(255, 217, 138, 0.22);
   }
 
   body.cursor-pressed .portfolio-cursor-ring {
