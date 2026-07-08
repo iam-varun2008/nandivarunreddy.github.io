@@ -718,7 +718,6 @@ setupIeltsUpload();
 setupNewTabLinks();
 setupImageLightbox();
 setupArtUploads();
-setupPortfolioCursor();
 setupInteractiveGlow();
 updateScrollEffects();
 
