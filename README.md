@@ -1,18 +1,51 @@
-﻿# Nandi Varun Reddy Portfolio Website
+# Nandi Varun Reddy Portfolio
 
-Open `index.html` in a browser to view the site.
+Admissions-focused portfolio website for Nandi Varun Reddy, a Computer Science and cybersecurity applicant from Telangana, India.
 
-## Replace these links before publishing
+Live site: https://iam-varun2008.github.io/nandivarunreddy.github.io/
 
-In `index.html`, update:
+## Overview
 
-- `https://github.com/your-github-username`
-- `mailto:your.email@example.com`
-- `https://your-portfolio-link.example`
-- Project GitHub repository links
-- Certificate verification links if you have official direct verification URLs
+This portfolio is designed for undergraduate university admissions. It presents academic performance, beginner cybersecurity projects, certificates, art, skills, and long-term goals in a serious but visually creative format.
 
-## Add your real assets here
+The site includes:
+
+- Language gate with English and Korean modes
+- Animated one-page portfolio layout
+- Education and marks summary
+- CS50P, TryHackMe, and IELTS certificate cards
+- Python cybersecurity project showcases with screenshots and demo videos
+- Realistic graphite portrait section
+- Skills and goals sections written for an admissions audience
+- Minimal public contact details
+
+## Main Sections
+
+- Home
+- About
+- Education
+- Certificates
+- Projects
+- Art
+- Skills
+- Goals
+- Contact
+
+## Projects Featured
+
+### Log Analyzer & Threat Detector
+
+Python defensive security project that analyzes Apache-style log files and identifies suspicious patterns such as repeated IP activity, admin access attempts, unusual status codes, and repeated failed requests.
+
+Repository: https://github.com/iam-varun2008/Log-Analyzer-and-Threat-Detector
+
+### Network Port Scanner & Basic Vulnerability Risk Reporter
+
+Python educational security project for authorized testing environments. It checks open ports, identifies basic services, assigns simple risk levels, and provides beginner-friendly recommendations.
+
+Repository: https://github.com/iam-varun2008/port-vulnerability-scanner
+
+## File Structure
 
 ```text
 public/
@@ -22,35 +55,53 @@ public/
     ielts-academic.pdf
 
   projects/
-    log-analyzer-terminal.png
-    log-analyzer-report.png
     log-analyzer-demo.mp4
-    port-scanner-terminal.png
-    port-scanner-report.png
+    log-analyzer-report.png
+    log-analyzer-results.png
+    log-analyzer-structure.png
+    log-analyzer-terminal.png
     port-scanner-demo.mp4
+    port-scanner-report.png
+    port-scanner-results.png
+    port-scanner-structure.png
+    port-scanner-terminal.png
 
   art/
     portrait-1.jpg
     portrait-2.jpg
     portrait-3.jpg
     portrait-4.jpg
-    portrait-5.jpg
-    portrait-6.jpg
-    drawing-process.mp4
 
   images/
     profile-photo.jpg
     cybersecurity-abstract.png
 ```
 
-The site already has visual fallbacks, so it will still look complete before you add every file.
+## Updating Assets
 
-## Privacy reminder
+To make new files permanent on the live website, add them inside the correct `public/` folder and commit them to GitHub.
 
-Keep phone number, home address, Aadhaar/passport files, and private marks memo PDFs off the public website.
+The in-page "Add Certificate" and "Add Photo" buttons are preview helpers. A static GitHub Pages website cannot permanently save uploads by itself, so final files must be placed in the repository and pushed.
 
-## Certificate status
+## Privacy Choices
 
-- CS50P and TryHackMe PDFs are already copied into `public/certificates/`.
-- IELTS currently uses an on-page `Add IELTS Certificate` button so a PDF/image can be selected and previewed locally later.
-- For final publishing, place the IELTS certificate at `public/certificates/ielts-academic.pdf` or update the card link to the official verification page.
+This portfolio intentionally avoids publishing:
+
+- Phone number
+- Home address
+- Aadhaar, passport, or private ID documents
+- Public marks memo PDFs
+- Sensitive personal documents
+
+Only admissions-relevant public information is shown.
+
+## Tech Notes
+
+The website is a static GitHub Pages site. The main page is `index.html`, with visual assets stored in `public/`.
+
+Animations and interactions are handled directly in the page using browser-based React, Framer Motion, and custom canvas/CSS effects, so no build step is required for deployment.
+
+## Contact
+
+Email: 2008.varunreddy@gmail.com  
+GitHub: https://github.com/iam-varun2008
