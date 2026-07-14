@@ -25,10 +25,45 @@ type LightboxState = {
 const wrapIndex = (index: number, length: number) =>
   (index + length) % length;
 
+function setProjectCardInteraction(
+  card: HTMLElement,
+  active: boolean
+): void {
+  card.style.pointerEvents = active ? "auto" : "none";
+  card.setAttribute("aria-hidden", active ? "false" : "true");
+
+  const interactiveElements = card.querySelectorAll<HTMLElement>(
+    "a, button, input, select, textarea, [tabindex]"
+  );
+
+  interactiveElements.forEach((element) => {
+    if (active) {
+      const previousTabIndex = element.dataset.previousTabIndex;
+
+      if (previousTabIndex !== undefined) {
+        if (previousTabIndex === "") {
+          element.removeAttribute("tabindex");
+        } else {
+          element.setAttribute("tabindex", previousTabIndex);
+        }
+
+        delete element.dataset.previousTabIndex;
+      }
+    } else {
+      if (element.dataset.previousTabIndex === undefined) {
+        element.dataset.previousTabIndex =
+          element.getAttribute("tabindex") ?? "";
+      }
+
+      element.setAttribute("tabindex", "-1");
+    }
+  });
+}
+
 const ProjectCardsSection = () => {
-  const projectStageRef = useRef<HTMLDivElement>(null);
-  const firstStepRef = useRef<HTMLDivElement>(null);
-  const secondStepRef = useRef<HTMLDivElement>(null);
+  const projectSectionRef = useRef<HTMLElement>(null);
+  const projectPinStageRef = useRef<HTMLDivElement>(null);
+  const projectCardStackRef = useRef<HTMLDivElement>(null);
   const firstCardRef = useRef<HTMLElement>(null);
   const secondCardRef = useRef<HTMLElement>(null);
   const imageCloseRef = useRef<HTMLButtonElement>(null);
@@ -44,74 +79,140 @@ const ProjectCardsSection = () => {
   const [demoProject, setDemoProject] = useState<SecurityProject | null>(null);
 
   useLayoutEffect(() => {
-    const projectStage = projectStageRef.current;
-    const firstStep = firstStepRef.current;
-    const secondStep = secondStepRef.current;
+    const projectSection = projectSectionRef.current;
+    const projectPinStage = projectPinStageRef.current;
+    const projectCardStack = projectCardStackRef.current;
     const firstCard = firstCardRef.current;
     const secondCard = secondCardRef.current;
-    if (!projectStage || !firstStep || !secondStep || !firstCard || !secondCard) {
+    if (
+      !projectSection ||
+      !projectPinStage ||
+      !projectCardStack ||
+      !firstCard ||
+      !secondCard
+    ) {
       return;
     }
 
+    const media = gsap.matchMedia();
     const context = gsap.context(() => {
-      if (!window.matchMedia("(min-width: 901px)").matches) {
-        return;
-      }
-
-      gsap.fromTo(
-        firstCard,
-        { y: 70, opacity: 0 },
-        {
-          y: 0,
-          opacity: 1,
-          ease: "none",
-          scrollTrigger: {
-            id: "project-card-one-enter",
-            trigger: firstStep,
-            start: "top 84%",
-            end: "top 30%",
-            scrub: 0.8,
-          },
-        }
-      );
-
-      gsap.fromTo(
-        secondCard,
-        { y: 170, opacity: 0.15, scale: 0.97 },
-        {
-          y: 0,
-          opacity: 1,
+      media.add("(min-width: 901px)", () => {
+        gsap.set(firstCard, {
+          yPercent: 0,
           scale: 1,
-          ease: "none",
-          scrollTrigger: {
-            id: "project-card-two-enter",
-            trigger: secondStep,
-            start: "top 90%",
-            end: "top 24%",
-            scrub: 0.8,
-          },
-        }
-      );
+          opacity: 1,
+          filter: "brightness(1)",
+          zIndex: 1,
+        });
 
-      gsap.to(firstCard, {
-        y: -80,
-        scale: 0.95,
-        opacity: 0.48,
-        ease: "none",
-        scrollTrigger: {
-          id: "project-card-one-recede",
-          trigger: secondStep,
-          start: "top 88%",
-          end: "top 28%",
-          scrub: 0.8,
-        },
+        gsap.set(secondCard, {
+          yPercent: 115,
+          scale: 1,
+          opacity: 1,
+          zIndex: 2,
+          pointerEvents: "none",
+        });
+
+        setProjectCardInteraction(firstCard, true);
+        setProjectCardInteraction(secondCard, false);
+
+        const timeline = gsap.timeline({
+          scrollTrigger: {
+            id: "projects-pinned-card-transition",
+            trigger: projectSection,
+            start: "top top",
+            end: "+=120%",
+            scrub: 0.8,
+            pin: projectPinStage,
+            pinSpacing: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              const secondProjectIsActive = self.progress >= 0.78;
+              setProjectCardInteraction(firstCard, !secondProjectIsActive);
+              setProjectCardInteraction(secondCard, secondProjectIsActive);
+            },
+            onLeaveBack: () => {
+              setProjectCardInteraction(firstCard, true);
+              setProjectCardInteraction(secondCard, false);
+            },
+            onLeave: () => {
+              setProjectCardInteraction(firstCard, false);
+              setProjectCardInteraction(secondCard, true);
+            },
+          },
+        });
+
+        timeline
+          .to(
+            firstCard,
+            {
+              yPercent: -7,
+              scale: 0.95,
+              opacity: 0.48,
+              filter: "brightness(0.58)",
+              ease: "none",
+            },
+            0
+          )
+          .to(
+            secondCard,
+            {
+              yPercent: 0,
+              scale: 1,
+              opacity: 1,
+              ease: "none",
+            },
+            0
+          );
+
+        return () => {
+          timeline.scrollTrigger?.kill();
+          timeline.kill();
+        };
       });
 
-      ScrollTrigger.refresh();
-    }, projectStage);
+      media.add("(max-width: 900px)", () => {
+        gsap.set([firstCard, secondCard], {
+          clearProps: "transform,opacity,filter,pointerEvents,zIndex",
+        });
+        setProjectCardInteraction(firstCard, true);
+        setProjectCardInteraction(secondCard, true);
+      });
+    }, projectSection);
 
     return () => {
+      media.revert();
       context.revert();
+    };
+  }, []);
+
+  useEffect(() => {
+    const projectSection = projectSectionRef.current;
+    if (!projectSection) return;
+
+    let resizeFrame = 0;
+    const refresh = () => ScrollTrigger.refresh();
+    const refreshAfterResize = () => {
+      window.cancelAnimationFrame(resizeFrame);
+      resizeFrame = window.requestAnimationFrame(refresh);
+    };
+    const images = Array.from(projectSection.querySelectorAll("img"));
+
+    images.forEach((image) => {
+      if (!image.complete) image.addEventListener("load", refresh, { once: true });
+    });
+    window.addEventListener("load", refresh, { once: true });
+    window.addEventListener("resize", refreshAfterResize);
+    void document.fonts?.ready.then(refresh);
+    const initialFrame = window.requestAnimationFrame(refresh);
+
+    return () => {
+      window.cancelAnimationFrame(initialFrame);
+      window.cancelAnimationFrame(resizeFrame);
+      window.removeEventListener("load", refresh);
+      window.removeEventListener("resize", refreshAfterResize);
+      images.forEach((image) => image.removeEventListener("load", refresh));
     };
   }, []);
 
@@ -249,12 +350,16 @@ const ProjectCardsSection = () => {
 
   return (
     <>
-      <div className="whatIDO" id="projects">
-        <div className="what-box">
+      <section
+        className="whatIDO project-section"
+        id="projects"
+        ref={projectSectionRef}
+      >
+        <div className="project-pin-stage" ref={projectPinStageRef}>
+          <div className="project-title-area">
           <h2 className="title project-section-title">PROJECTS</h2>
-        </div>
-        <div className="what-box">
-          <div className="what-box-in project-scroll-stage" ref={projectStageRef}>
+          </div>
+          <div className="project-card-stack" ref={projectCardStackRef}>
             {projects.map((project, projectIndex) => {
               const screenshotIndex = screenshotIndexes[project.id] ?? 0;
               const screenshot = project.screenshots[screenshotIndex];
@@ -264,17 +369,13 @@ const ProjectCardsSection = () => {
                 .filter(Boolean);
 
               return (
-                <div
-                  className={`project-card-step project-card-step-${
+                <article
+                  className={`project-card project-card-${
                     projectIndex === 0 ? "first" : "second"
-                  }`}
+                  } floating-glass-card`}
                   key={project.id}
-                  ref={projectIndex === 0 ? firstStepRef : secondStepRef}
+                  ref={projectIndex === 0 ? firstCardRef : secondCardRef}
                 >
-                  <article
-                    className="what-content project-card floating-glass-card"
-                    ref={projectIndex === 0 ? firstCardRef : secondCardRef}
-                  >
                     <GlassOrbs />
                     <div className="project-card-media">
                       <button
@@ -369,13 +470,12 @@ const ProjectCardsSection = () => {
                         </a>
                       </div>
                     </div>
-                  </article>
-                </div>
+                </article>
               );
             })}
           </div>
         </div>
-      </div>
+      </section>
 
       {lightbox && lightboxProject && lightboxScreenshot && (
         <div

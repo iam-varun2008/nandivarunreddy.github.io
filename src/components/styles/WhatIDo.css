@@ -588,75 +588,85 @@
   }
 }
 
-/* Premium stacked project cards. The outer animation-dependent classes remain intact. */
-.whatIDO {
-  min-height: 170vh;
+/* One pinned Projects composition with an internal two-card transition. */
+.whatIDO.project-section {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 100vh;
   height: auto;
-  align-items: flex-start;
-  padding-top: 12vh;
+  padding: 0;
   box-sizing: border-box;
 }
 
-.whatIDO > .what-box:first-child {
-  width: 38%;
-  min-height: 145vh;
-  justify-content: flex-start;
+.project-pin-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(260px, 38%) minmax(0, 62%);
+  align-items: center;
+  width: 100%;
+  max-width: 1920px;
+  height: 100vh;
+  min-height: 680px;
+  margin: 0 auto;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding:
+    clamp(80px, 9vh, 120px)
+    clamp(24px, 4vw, 80px)
+    clamp(30px, 5vh, 60px);
 }
 
-.whatIDO > .what-box:last-child {
-  width: 62%;
-  justify-content: flex-end;
+.project-title-area {
+  position: relative;
+  z-index: 4;
+  align-self: center;
 }
 
-.what-box h2.project-section-title {
-  position: sticky;
-  top: 20vh;
-  margin: 0 0 0 clamp(16px, 4vw, 82px);
+.project-section-title {
+  position: relative;
+  margin: 0;
   color: #f4eef8;
   font-size: clamp(3.6rem, 6.4vw, 7.2rem);
   line-height: 0.88;
   letter-spacing: -0.055em;
 }
 
-.project-scroll-stage.what-box-in {
+.project-card-stack {
   position: relative;
+  align-self: center;
+  justify-self: end;
   width: min(680px, 48vw);
-  height: auto;
-  margin: 0 0 0 auto;
-  padding-bottom: 12vh;
+  height: min(76vh, 660px);
+  min-height: 590px;
+  overflow: visible;
+  isolation: isolate;
 }
 
-.project-card-step {
-  position: relative;
-  min-height: 112vh;
-  width: 100%;
-}
-
-.project-card-step-first {
-  z-index: 1;
-}
-
-.project-card-step-second {
-  z-index: 2;
-}
-
-.project-card.what-content {
-  position: sticky !important;
-  inset: auto !important;
-  top: 9vh;
+.project-card {
+  position: absolute !important;
+  inset: 0 !important;
   width: 100% !important;
-  height: auto !important;
-  min-height: 620px;
+  height: 100% !important;
+  min-height: 0;
+  margin: 0;
   padding: 0;
   box-sizing: border-box;
   opacity: 1;
   color: #f7f2fa;
-  pointer-events: auto;
-  will-change: transform, opacity;
+  will-change: transform, opacity, filter;
 }
 
-.project-card.what-content::before,
-.project-card.what-content::after {
+.project-card-first {
+  z-index: 1;
+}
+
+.project-card-second {
+  z-index: 2;
+}
+
+.project-card::before,
+.project-card::after {
   border: 0;
 }
 
@@ -738,7 +748,7 @@
   text-transform: uppercase;
 }
 
-.project-card.what-content h3 {
+.project-card h3 {
   max-width: 92%;
   margin: 0;
   font-size: clamp(1.65rem, 2.1vw, 2.25rem);
@@ -876,72 +886,54 @@
 }
 
 @media only screen and (max-width: 1200px) and (min-width: 901px) {
-  .whatIDO > .what-box:first-child {
-    width: 33%;
-  }
-
-  .whatIDO > .what-box:last-child {
-    width: 67%;
-  }
-
-  .project-scroll-stage.what-box-in,
-  .project-card.what-content {
+  .project-card-stack {
     width: min(610px, 58vw);
   }
 
-  .project-scroll-stage.what-box-in {
-    margin-left: auto;
-  }
-
-  .what-box h2.project-section-title {
-    margin-left: 18px;
+  .project-section-title {
     font-size: clamp(3rem, 5.4vw, 4.5rem);
   }
 }
 
 @media only screen and (max-width: 900px) {
-  .whatIDO {
-    min-height: auto;
+  .project-pin-stage {
+    display: block;
+    width: min(100% - 28px, 680px);
+    height: auto;
+    min-height: 0;
+    margin: 0 auto;
+    overflow: visible;
     padding: 72px 0 90px;
   }
 
-  .whatIDO > .what-box:first-child,
-  .whatIDO > .what-box:last-child {
-    width: min(100% - 28px, 680px);
-    min-height: auto;
-    height: auto;
+  .project-title-area {
+    margin-bottom: 36px;
   }
 
-  .what-box h2.project-section-title {
-    position: static;
-    margin: 0 0 36px;
+  .project-section-title {
+    position: relative;
+    margin: 0;
     font-size: clamp(3.25rem, 14vw, 5.5rem);
   }
 
-  .project-scroll-stage.what-box-in {
+  .project-card-stack {
     display: grid;
-    gap: 0;
-    width: min(100% - 28px, 680px);
-    height: auto;
-    margin: 0 auto;
-    padding-bottom: 0;
-  }
-
-  .project-card-step {
+    gap: 30px;
     width: 100%;
-    min-height: auto;
-    margin-bottom: 32px;
+    height: auto;
+    min-height: 0;
   }
 
-  .project-card.what-content {
+  .project-card {
     position: relative !important;
     inset: auto !important;
-    top: auto;
     width: 100% !important;
     height: auto !important;
     min-height: 0;
-    opacity: 1 !important;
     transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    pointer-events: auto !important;
   }
 
   .project-card-media {
@@ -970,7 +962,7 @@
     gap: 14px;
   }
 
-  .project-card.what-content h3 {
+  .project-card h3 {
     font-size: 1.65rem;
   }
 
@@ -999,7 +991,7 @@
 
 .project-card .project-screenshot-button {
   position: absolute;
-  z-index: 2;
+  z-index: 22;
   inset: 0;
   display: block;
   width: 100%;
@@ -1043,11 +1035,11 @@
 .project-screenshot-counter,
 .project-number {
   position: absolute;
-  z-index: 6;
+  z-index: 22;
 }
 
 .project-carousel-arrow {
-  z-index: 12;
+  z-index: 22;
   top: 50%;
   display: grid;
   place-items: center;
@@ -1165,6 +1157,7 @@
 .project-screenshot-button,
 .project-screenshot-dots,
 .project-screenshot-dots button {
+  z-index: 22;
   pointer-events: auto;
 }
 

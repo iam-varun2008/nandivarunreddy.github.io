@@ -31,7 +31,7 @@ export function setCharTimeline(
     scrollTrigger: {
       trigger: ".whatIDO",
       start: "top top",
-      end: "bottom top",
+      end: "bottom bottom",
       scrub: true,
       invalidateOnRefresh: true,
     },
@@ -112,11 +112,16 @@ export function setCharTimeline(
         .fromTo(
           ".character-model",
           { y: "0%" },
-          { y: "-100%", duration: 4, ease: "none", delay: 1 },
+          { y: "-100%", duration: 1.5, ease: "none", delay: 8.5 },
           0
         )
-        .fromTo(".whatIDO", { y: 0 }, { y: "15%", duration: 2 }, 0)
-        .to(character.rotation, { x: -0.04, duration: 2, delay: 1 }, 0);
+        .fromTo(
+          ".whatIDO",
+          { y: 0 },
+          { y: "15%", duration: 1.5, delay: 8.5 },
+          0
+        )
+        .to(character.rotation, { x: -0.04, duration: 1.5, delay: 8.5 }, 0);
     }
   } else {
     if (character) {
