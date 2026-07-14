@@ -1,107 +1,99 @@
-# Nandi Varun Reddy Portfolio
+# 🚀 3D Developer Portfolio Website (React + TypeScript + Three.js)
 
-Admissions-focused portfolio website for Nandi Varun Reddy, a Computer Science and cybersecurity applicant from Telangana, India.
+Varun Reddy's interactive cybersecurity and university-admissions portfolio.
 
-Live site: https://iam-varun2008.github.io/nandivarunreddy.github.io/
+A premium student portfolio built with **React**, **TypeScript**, **Three.js**, **GSAP**, and **WebGL**. It presents practical Python security projects, foundational certifications, graphite art, honest skill levels, and academic goals.
 
-## Overview
+If you’re a developer looking for a **portfolio template** that feels premium, interactive, and memorable—this repo is for you.
 
-This portfolio is designed for undergraduate university admissions. It presents academic performance, beginner cybersecurity projects, certificates, art, skills, and long-term goals in a serious but visually creative format.
+The Three.js character, GSAP scroll choreography, lighting, camera movement, loading sequence, cursor interaction, and responsive behaviour are preserved from the original open-source template.
 
-The site includes:
+---
 
-- Language gate with English and Korean modes
-- Animated one-page portfolio layout
-- Education and marks summary
-- CS50P, TryHackMe, and IELTS certificate cards
-- Python cybersecurity project showcases with screenshots and demo videos
-- Realistic graphite portrait section
-- Skills and goals sections written for an admissions audience
-- Minimal public contact details
+## ✨ Highlights
 
-## Main Sections
+- **3D / WebGL experience** powered by **Three.js**
+- Smooth animations with **GSAP**
+- Modern **React + TypeScript** codebase
+- Fast, responsive UI (desktop + mobile)
+- Designed for developers, engineers, programmers, and creators
 
-- Home
-- About
-- Education
-- Certificates
-- Projects
-- Art
-- Skills
-- Goals
-- Contact
+---
 
-## Projects Featured
+## 🧰 Tech Stack
 
-### Log Analyzer & Threat Detector
+- **React**
+- **TypeScript**
+- **Three.js / WebGL**
+- **GSAP**
+- **HTML / CSS / JavaScript**
 
-Python defensive security project that analyzes Apache-style log files and identifies suspicious patterns such as repeated IP activity, admin access attempts, unusual status codes, and repeated failed requests.
+---
 
-Repository: https://github.com/iam-varun2008/Log-Analyzer-and-Threat-Detector
+## 🚀 Getting Started
 
-### Network Port Scanner & Basic Vulnerability Risk Reporter
+### 1) Clone
 
-Python educational security project for authorized testing environments. It checks open ports, identifies basic services, assigns simple risk levels, and provides beginner-friendly recommendations.
-
-Repository: https://github.com/iam-varun2008/port-vulnerability-scanner
-
-## File Structure
-
-```text
-public/
-  certificates/
-    cs50p-cert.pdf
-    tryhackme-pre-security.pdf
-    ielts-academic.pdf
-
-  projects/
-    log-analyzer-demo.mp4
-    log-analyzer-report.png
-    log-analyzer-results.png
-    log-analyzer-structure.png
-    log-analyzer-terminal.png
-    port-scanner-demo.mp4
-    port-scanner-report.png
-    port-scanner-results.png
-    port-scanner-structure.png
-    port-scanner-terminal.png
-
-  art/
-    portrait-1.jpg
-    portrait-2.jpg
-    portrait-3.jpg
-    portrait-4.jpg
-
-  images/
-    profile-photo.jpg
-    cybersecurity-abstract.png
+```bash
+git clone <your-repository-url>
+cd portfolio-website
 ```
 
-## Updating Assets
+### 2) Install
 
-To make new files permanent on the live website, add them inside the correct `public/` folder and commit them to GitHub.
+```bash
+npm install
+```
 
-The in-page "Add Certificate" and "Add Photo" buttons are preview helpers. A static GitHub Pages website cannot permanently save uploads by itself, so final files must be placed in the repository and pushed.
+### 3) Run locally
 
-## Privacy Choices
+```bash
+npm run dev
+```
 
-This portfolio intentionally avoids publishing:
+### 4) Build
 
-- Phone number
-- Home address
-- Aadhaar, passport, or private ID documents
-- Public marks memo PDFs
-- Sensitive personal documents
+```bash
+npm run build
+```
 
-Only admissions-relevant public information is shown.
+---
 
-## Tech Notes
+## 🧩 Customize (Quick Guide)
 
-The website is a static GitHub Pages site. The main page is `index.html`, with visual assets stored in `public/`.
+Typical things you’ll want to update:
 
-Animations and interactions are handled directly in the page using browser-based React, Framer Motion, and custom canvas/CSS effects, so no build step is required for deployment.
+- **Your name + hero section text**
+- **Projects list**
+- **Social links** (GitHub, LinkedIn, email)
+- **SEO meta title/description**
 
-## Contact
+---
 
-Email: 2008.varunreddy@gmail.com  
-GitHub: https://github.com/iam-varun2008
+## ⭐ Support
+
+If you found this useful:
+
+- Please **star** the repository (it helps a lot)
+- Share it with a friend who needs a portfolio template
+- Sponsor via the **Sponsor** button on GitHub (if available in your region)
+
+---
+
+## 🤝 Connect
+
+- GitHub: https://github.com/iam-varun2008
+
+---
+
+## 🏷️ Recommended GitHub Topics (add in repo settings)
+
+Add these topics to improve GitHub search visibility:
+
+`portfolio` `developer-portfolio` `portfolio-website` `portfolio-template` `3d-portfolio` `react` `typescript` `threejs` `webgl` `gsap` `frontend` `vite`
+
+---
+
+## 🪪 License
+
+This project is open source and available under the **MIT License**. See [LICENSE](LICENSE).
