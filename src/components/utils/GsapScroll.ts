@@ -27,15 +27,6 @@ export function setCharTimeline(
       invalidateOnRefresh: true,
     },
   });
-  const tl3 = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".whatIDO",
-      start: "top top",
-      end: "bottom bottom",
-      scrub: true,
-      invalidateOnRefresh: true,
-    },
-  });
   let screenLight: any, monitor: any;
   character?.children.forEach((object: any) => {
     if (object.name === "Plane004") {
@@ -108,20 +99,29 @@ export function setCharTimeline(
           0.3
         );
 
-      tl3
+      const projectCharacterExitTimeline = gsap.timeline({
+        scrollTrigger: {
+          id: "projects-character-exit",
+          trigger: ".projects-scroll-shell",
+          start: "85% top",
+          end: "bottom top",
+          scrub: true,
+          invalidateOnRefresh: true,
+        },
+      });
+
+      projectCharacterExitTimeline
         .fromTo(
           ".character-model",
           { y: "0%" },
-          { y: "-100%", duration: 1.5, ease: "none", delay: 8.5 },
+          { y: "-100%", duration: 1, ease: "none" },
           0
         )
-        .fromTo(
-          ".whatIDO",
-          { y: 0 },
-          { y: "15%", duration: 1.5, delay: 8.5 },
+        .to(
+          character.rotation,
+          { x: -0.04, duration: 1, ease: "none" },
           0
-        )
-        .to(character.rotation, { x: -0.04, duration: 1.5, delay: 8.5 }, 0);
+        );
     }
   } else {
     if (character) {

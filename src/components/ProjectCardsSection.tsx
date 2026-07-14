@@ -25,7 +25,7 @@ type LightboxState = {
 const wrapIndex = (index: number, length: number) =>
   (index + length) % length;
 
-function setProjectCardInteraction(
+function setProjectInteraction(
   card: HTMLElement,
   active: boolean
 ): void {
@@ -61,8 +61,7 @@ function setProjectCardInteraction(
 }
 
 const ProjectCardsSection = () => {
-  const projectSectionRef = useRef<HTMLElement>(null);
-  const projectPinStageRef = useRef<HTMLDivElement>(null);
+  const projectsShellRef = useRef<HTMLElement>(null);
   const projectCardStackRef = useRef<HTMLDivElement>(null);
   const firstCardRef = useRef<HTMLElement>(null);
   const secondCardRef = useRef<HTMLElement>(null);
@@ -79,23 +78,17 @@ const ProjectCardsSection = () => {
   const [demoProject, setDemoProject] = useState<SecurityProject | null>(null);
 
   useLayoutEffect(() => {
-    const projectSection = projectSectionRef.current;
-    const projectPinStage = projectPinStageRef.current;
-    const projectCardStack = projectCardStackRef.current;
+    const shell = projectsShellRef.current;
+    const stack = projectCardStackRef.current;
     const firstCard = firstCardRef.current;
     const secondCard = secondCardRef.current;
-    if (
-      !projectSection ||
-      !projectPinStage ||
-      !projectCardStack ||
-      !firstCard ||
-      !secondCard
-    ) {
+    if (!shell || !stack || !firstCard || !secondCard) {
       return;
     }
 
-    const media = gsap.matchMedia();
     const context = gsap.context(() => {
+      const media = gsap.matchMedia();
+
       media.add("(min-width: 901px)", () => {
         gsap.set(firstCard, {
           yPercent: 0,
@@ -106,39 +99,39 @@ const ProjectCardsSection = () => {
         });
 
         gsap.set(secondCard, {
-          yPercent: 115,
-          scale: 1,
+          yPercent: 112,
+          scale: 0.985,
           opacity: 1,
+          filter: "brightness(0.9)",
           zIndex: 2,
-          pointerEvents: "none",
         });
 
-        setProjectCardInteraction(firstCard, true);
-        setProjectCardInteraction(secondCard, false);
+        setProjectInteraction(firstCard, true);
+        setProjectInteraction(secondCard, false);
 
         const timeline = gsap.timeline({
+          defaults: {
+            ease: "none",
+          },
           scrollTrigger: {
-            id: "projects-pinned-card-transition",
-            trigger: projectSection,
+            id: "projects-card-transition",
+            trigger: shell,
             start: "top top",
-            end: "+=120%",
-            scrub: 0.8,
-            pin: projectPinStage,
-            pinSpacing: true,
-            anticipatePin: 1,
+            end: "bottom bottom",
+            scrub: 0.75,
             invalidateOnRefresh: true,
             onUpdate: (self) => {
-              const secondProjectIsActive = self.progress >= 0.78;
-              setProjectCardInteraction(firstCard, !secondProjectIsActive);
-              setProjectCardInteraction(secondCard, secondProjectIsActive);
+              const secondCardActive = self.progress >= 0.72;
+              setProjectInteraction(firstCard, !secondCardActive);
+              setProjectInteraction(secondCard, secondCardActive);
             },
             onLeaveBack: () => {
-              setProjectCardInteraction(firstCard, true);
-              setProjectCardInteraction(secondCard, false);
+              setProjectInteraction(firstCard, true);
+              setProjectInteraction(secondCard, false);
             },
             onLeave: () => {
-              setProjectCardInteraction(firstCard, false);
-              setProjectCardInteraction(secondCard, true);
+              setProjectInteraction(firstCard, false);
+              setProjectInteraction(secondCard, true);
             },
           },
         });
@@ -147,11 +140,11 @@ const ProjectCardsSection = () => {
           .to(
             firstCard,
             {
-              yPercent: -7,
-              scale: 0.95,
-              opacity: 0.48,
-              filter: "brightness(0.58)",
-              ease: "none",
+              yPercent: -5,
+              scale: 0.955,
+              opacity: 0.46,
+              filter: "brightness(0.56)",
+              duration: 1,
             },
             0
           )
@@ -161,7 +154,8 @@ const ProjectCardsSection = () => {
               yPercent: 0,
               scale: 1,
               opacity: 1,
-              ease: "none",
+              filter: "brightness(1)",
+              duration: 1,
             },
             0
           );
@@ -174,22 +168,25 @@ const ProjectCardsSection = () => {
 
       media.add("(max-width: 900px)", () => {
         gsap.set([firstCard, secondCard], {
-          clearProps: "transform,opacity,filter,pointerEvents,zIndex",
+          clearProps: "transform,opacity,filter,pointerEvents",
         });
-        setProjectCardInteraction(firstCard, true);
-        setProjectCardInteraction(secondCard, true);
+        setProjectInteraction(firstCard, true);
+        setProjectInteraction(secondCard, true);
       });
-    }, projectSection);
+
+      return () => {
+        media.revert();
+      };
+    }, shell);
 
     return () => {
-      media.revert();
       context.revert();
     };
   }, []);
 
   useEffect(() => {
-    const projectSection = projectSectionRef.current;
-    if (!projectSection) return;
+    const shell = projectsShellRef.current;
+    if (!shell) return;
 
     let resizeFrame = 0;
     const refresh = () => ScrollTrigger.refresh();
@@ -197,7 +194,7 @@ const ProjectCardsSection = () => {
       window.cancelAnimationFrame(resizeFrame);
       resizeFrame = window.requestAnimationFrame(refresh);
     };
-    const images = Array.from(projectSection.querySelectorAll("img"));
+    const images = Array.from(shell.querySelectorAll("img"));
 
     images.forEach((image) => {
       if (!image.complete) image.addEventListener("load", refresh, { once: true });
@@ -351,16 +348,17 @@ const ProjectCardsSection = () => {
   return (
     <>
       <section
-        className="whatIDO project-section"
+        className="projects-scroll-shell"
         id="projects"
-        ref={projectSectionRef}
+        ref={projectsShellRef}
       >
-        <div className="project-pin-stage" ref={projectPinStageRef}>
-          <div className="project-title-area">
-          <h2 className="title project-section-title">PROJECTS</h2>
+        <div className="whatIDO projects-sticky-view">
+          <div className="what-box project-title-area">
+            <h2 className="title project-section-title">PROJECTS</h2>
           </div>
-          <div className="project-card-stack" ref={projectCardStackRef}>
-            {projects.map((project, projectIndex) => {
+          <div className="what-box project-card-area">
+            <div className="project-card-stack" ref={projectCardStackRef}>
+              {projects.map((project, projectIndex) => {
               const screenshotIndex = screenshotIndexes[project.id] ?? 0;
               const screenshot = project.screenshots[screenshotIndex];
               const technologies = project.technology
@@ -472,7 +470,8 @@ const ProjectCardsSection = () => {
                     </div>
                 </article>
               );
-            })}
+              })}
+            </div>
           </div>
         </div>
       </section>

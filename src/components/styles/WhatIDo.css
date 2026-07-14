@@ -588,19 +588,16 @@
   }
 }
 
-/* One pinned Projects composition with an internal two-card transition. */
-.whatIDO.project-section {
+/* One CSS-sticky Projects composition with an internal two-card transition. */
+.projects-scroll-shell {
   position: relative;
-  display: block;
   width: 100%;
-  min-height: 100vh;
-  height: auto;
-  padding: 0;
-  box-sizing: border-box;
+  height: 230vh;
 }
 
-.project-pin-stage {
-  position: relative;
+.projects-sticky-view.whatIDO {
+  position: sticky;
+  top: 0;
   display: grid;
   grid-template-columns: minmax(260px, 38%) minmax(0, 62%);
   align-items: center;
@@ -609,21 +606,22 @@
   height: 100vh;
   min-height: 680px;
   margin: 0 auto;
+  padding:
+    clamp(78px, 9vh, 116px)
+    clamp(24px, 4vw, 80px)
+    clamp(28px, 5vh, 58px);
   overflow: hidden;
   box-sizing: border-box;
-  padding:
-    clamp(80px, 9vh, 120px)
-    clamp(24px, 4vw, 80px)
-    clamp(30px, 5vh, 60px);
+  transform: none;
 }
 
 .project-title-area {
   position: relative;
-  z-index: 4;
-  align-self: center;
+  z-index: 5;
+  width: 100%;
 }
 
-.project-section-title {
+.project-title-area .project-section-title {
   position: relative;
   margin: 0;
   color: #f4eef8;
@@ -632,13 +630,18 @@
   letter-spacing: -0.055em;
 }
 
+.project-card-area {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .project-card-stack {
   position: relative;
-  align-self: center;
-  justify-self: end;
   width: min(680px, 48vw);
   height: min(76vh, 660px);
   min-height: 590px;
+  margin-left: auto;
   overflow: visible;
   isolation: isolate;
 }
@@ -819,6 +822,8 @@
 }
 
 .project-card .what-actions {
+  position: relative;
+  z-index: 20;
   display: flex;
   gap: 10px;
   margin-top: 18px;
@@ -826,6 +831,8 @@
 
 .project-card .project-action,
 .project-dialog .project-action {
+  position: relative;
+  z-index: 21;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -836,6 +843,7 @@
   border-radius: 999px;
   color: #fff;
   cursor: pointer;
+  pointer-events: auto;
   font: inherit;
   font-size: 11px;
   font-weight: 600;
@@ -890,13 +898,19 @@
     width: min(610px, 58vw);
   }
 
-  .project-section-title {
+  .project-title-area .project-section-title {
     font-size: clamp(3rem, 5.4vw, 4.5rem);
   }
 }
 
 @media only screen and (max-width: 900px) {
-  .project-pin-stage {
+  .projects-scroll-shell {
+    height: auto;
+  }
+
+  .projects-sticky-view.whatIDO {
+    position: relative;
+    top: auto;
     display: block;
     width: min(100% - 28px, 680px);
     height: auto;
@@ -910,7 +924,7 @@
     margin-bottom: 36px;
   }
 
-  .project-section-title {
+  .project-title-area .project-section-title {
     position: relative;
     margin: 0;
     font-size: clamp(3.25rem, 14vw, 5.5rem);
@@ -985,7 +999,8 @@
 /* Interactive screenshot galleries. */
 .project-card::before,
 .project-card::after,
-.project-card-media::after {
+.project-card-media::after,
+.glass-orb {
   pointer-events: none;
 }
 
