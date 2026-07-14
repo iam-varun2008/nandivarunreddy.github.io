@@ -1,6 +1,8 @@
 import { goals, skillGroups, type SkillLevel } from "../data/skills";
 import "./styles/TechStackNew.css";
 import "./styles/FloatingBubbleCard.css";
+import { resolvePublicAsset } from "../utils/resolvePublicAsset";
+import GlassOrbs from "./GlassOrbs";
 
 type SkillItem = {
   name: string;
@@ -22,7 +24,7 @@ const SkillsGoals = () => {
     <section className="techstack-new" id="skills">
       <div className="techstack-video-container" aria-hidden="true">
         <video autoPlay loop muted playsInline className="techstack-video">
-          <source src="/video/video.webm" type="video/webm" />
+          <source src={resolvePublicAsset("video/video.webm")} type="video/webm" />
         </video>
         <div className="techstack-overlay"></div>
       </div>
@@ -42,6 +44,7 @@ const SkillsGoals = () => {
             <div key={rowIndex} className="techstack-row">
               {row.map((skill) => (
                 <div key={skill.name} className="techstack-item skill-item floating-glass-card" title={`${skill.name} — ${skill.level}`}>
+                  <GlassOrbs />
                   <span className="skill-mark" aria-hidden="true">{skill.name.slice(0, 2).toUpperCase()}</span>
                   <span>{skill.name}</span>
                   <small>{skill.level}</small>
@@ -53,11 +56,13 @@ const SkillsGoals = () => {
 
         <div className="goals-grid">
           <article className="goal-column floating-glass-card">
+            <GlassOrbs />
             <p className="goal-kicker">Next steps</p>
             <h3>Short-term goals</h3>
             <ul>{goals.shortTerm.map((goal) => <li key={goal}>{goal}</li>)}</ul>
           </article>
           <article className="goal-column floating-glass-card">
+            <GlassOrbs />
             <p className="goal-kicker">Long view</p>
             <h3>Long-term goals</h3>
             <ul>{goals.longTerm.map((goal) => <li key={goal}>{goal}</li>)}</ul>

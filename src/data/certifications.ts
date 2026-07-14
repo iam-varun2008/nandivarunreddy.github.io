@@ -15,7 +15,7 @@ export const certifications: Certification[] = [
     details:
       "Completed the course and received the certificate after successfully submitting all required assignments and the final project.",
     finalProject: "Personal Expense Tracker",
-    certificateUrl: "/certificates/cs50p-cert.pdf"
+    certificateUrl: "certificates/cs50p-cert.pdf"
   },
   {
     shortLabel: "PRE SEC",
@@ -23,6 +23,6 @@ export const certifications: Certification[] = [
     issuer: "TryHackMe",
     details:
       "Completed foundational modules covering cybersecurity concepts, networking, Linux, Windows, the web, virtualisation, cloud computing and basic security principles.",
-    certificateUrl: "/certificates/tryhackme-pre-security.pdf"
+    certificateUrl: "certificates/tryhackme-pre-security.pdf"
   }
 ];

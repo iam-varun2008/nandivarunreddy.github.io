@@ -1,93 +1,113 @@
 .floating-glass-card {
   position: relative;
-  overflow: hidden;
   isolation: isolate;
-  border: 1px solid rgba(190, 170, 255, 0.22);
-  border-radius: clamp(24px, 2vw, 30px);
+  overflow: hidden;
+  border: 1px solid rgba(224, 205, 255, 0.24);
+  border-radius: 28px;
   background:
-    radial-gradient(circle at 14% 10%, rgba(174, 92, 255, 0.13), transparent 34%),
-    radial-gradient(circle at 90% 88%, rgba(255, 119, 214, 0.09), transparent 31%),
-    linear-gradient(145deg, rgba(28, 22, 50, 0.72), rgba(10, 9, 24, 0.58));
+    radial-gradient(circle at 88% 4%, rgba(205, 148, 255, 0.2), transparent 34%),
+    radial-gradient(circle at 6% 94%, rgba(110, 79, 220, 0.16), transparent 38%),
+    linear-gradient(145deg, rgba(47, 34, 72, 0.4), rgba(13, 11, 25, 0.2));
   box-shadow:
-    0 24px 70px rgba(0, 0, 0, 0.38),
-    inset 0 1px 0 rgba(255, 255, 255, 0.09),
-    inset 0 0 42px rgba(182, 127, 255, 0.045);
+    0 26px 76px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -1px 0 rgba(173, 124, 255, 0.08);
   color: #f7f3fa;
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  transition:
-    translate 0.3s ease,
-    border-color 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.floating-glass-card::before,
-.floating-glass-card::after {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  border: 0;
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(20px);
-  opacity: 0.22;
-  animation: floatingGlassBubble 10s ease-in-out infinite alternate;
-}
-
-.floating-glass-card::before {
-  top: -42px;
-  right: 8%;
-  width: 100px;
-  height: 100px;
-  background: rgba(177, 103, 255, 0.48);
-}
-
-.floating-glass-card::after {
-  right: auto;
-  bottom: -48px;
-  left: 7%;
-  width: 76px;
-  height: 76px;
-  background: rgba(255, 116, 205, 0.32);
-  animation-delay: -4s;
+  -webkit-backdrop-filter: blur(22px) saturate(145%);
+  backdrop-filter: blur(22px) saturate(145%);
+  transition: transform 0.32s ease, border-color 0.32s ease, box-shadow 0.32s ease;
 }
 
 .floating-glass-card:hover {
-  translate: 0 -4px;
-  border-color: rgba(205, 184, 255, 0.34);
+  border-color: rgba(230, 215, 255, 0.4);
   box-shadow:
-    0 30px 78px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.11),
-    inset 0 0 46px rgba(182, 127, 255, 0.06);
+    0 32px 88px rgba(0, 0, 0, 0.46),
+    0 0 42px rgba(158, 103, 225, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
-@keyframes floatingGlassBubble {
-  0% {
-    transform: translate3d(-5px, 4px, 0) scale(0.92);
-  }
-  100% {
-    transform: translate3d(12px, -9px, 0) scale(1.08);
-  }
+.floating-glass-card:not(.project-card):hover {
+  transform: translateY(-5px);
 }
 
-@supports not ((backdrop-filter: blur(18px)) or (-webkit-backdrop-filter: blur(18px))) {
+.project-card.floating-glass-card {
+  transition: border-color 0.32s ease, box-shadow 0.32s ease;
+}
+
+.glass-orb {
+  position: absolute;
+  z-index: 0;
+  display: block;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(8px);
+}
+
+.glass-orb-one {
+  top: -75px;
+  right: -55px;
+  width: 190px;
+  height: 190px;
+  opacity: 0.4;
+  background: radial-gradient(
+    circle at 35% 35%,
+    rgba(237, 207, 255, 0.55),
+    rgba(176, 103, 255, 0.17) 42%,
+    transparent 72%
+  );
+  animation: glassOrbOne 8s ease-in-out infinite alternate;
+}
+
+.glass-orb-two {
+  bottom: -95px;
+  left: -65px;
+  width: 220px;
+  height: 220px;
+  opacity: 0.3;
+  background: radial-gradient(
+    circle at 60% 40%,
+    rgba(151, 121, 255, 0.42),
+    rgba(110, 67, 210, 0.12) 45%,
+    transparent 72%
+  );
+  animation: glassOrbTwo 10s ease-in-out infinite alternate;
+}
+
+.floating-glass-card > :not(.glass-orb) {
+  position: relative;
+  z-index: 1;
+}
+
+.floating-glass-card > .project-dialog-close {
+  position: absolute;
+  z-index: 5;
+}
+
+@keyframes glassOrbOne {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(-24px, 25px, 0) scale(1.1); }
+}
+
+@keyframes glassOrbTwo {
+  from { transform: translate3d(0, 0, 0) scale(1); }
+  to { transform: translate3d(26px, -22px, 0) scale(1.08); }
+}
+
+@supports not ((backdrop-filter: blur(22px)) or (-webkit-backdrop-filter: blur(22px))) {
   .floating-glass-card {
     background:
-      radial-gradient(circle at 14% 10%, rgba(174, 92, 255, 0.1), transparent 34%),
-      radial-gradient(circle at 90% 88%, rgba(255, 119, 214, 0.07), transparent 31%),
-      linear-gradient(145deg, rgb(26, 21, 45), rgb(11, 10, 25));
+      radial-gradient(circle at 88% 4%, rgba(205, 148, 255, 0.2), transparent 34%),
+      radial-gradient(circle at 6% 94%, rgba(110, 79, 220, 0.16), transparent 38%),
+      rgba(20, 16, 34, 0.86);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .floating-glass-card,
-  .floating-glass-card::before,
-  .floating-glass-card::after {
+  .glass-orb {
     animation: none;
-    transition-duration: 0.01ms;
   }
 
-  .floating-glass-card:hover {
-    translate: none;
+  .floating-glass-card {
+    transition: none;
   }
 }

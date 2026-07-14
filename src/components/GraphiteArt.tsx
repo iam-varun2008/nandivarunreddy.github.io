@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { artworks, artworkIntro, type Artwork } from "../data/artwork";
+import { resolvePublicAsset } from "../utils/resolvePublicAsset";
+import GlassOrbs from "./GlassOrbs";
 import "./styles/Work.css";
 import "./styles/FloatingBubbleCard.css";
 
@@ -75,6 +77,7 @@ const GraphiteArt = () => {
           <div className="work-flex">
             {artworks.map((artwork, index) => (
               <article className="work-box floating-glass-card" key={artwork.id}>
+                <GlassOrbs />
                 <div className="work-info">
                   <div className="work-title">
                     <h3>0{index + 1}</h3>
@@ -90,7 +93,7 @@ const GraphiteArt = () => {
                 </div>
                 {artwork.available ? (
                   <button className="artwork-preview" type="button" onClick={() => setSelectedArtwork(artwork)} aria-label={`View ${artwork.title} full screen`}>
-                    <img src={artwork.image} alt={artwork.alt} loading="lazy" />
+                    <img src={resolvePublicAsset(artwork.image)} alt={artwork.alt} loading="lazy" />
                   </button>
                 ) : (
                   <div className="artwork-placeholder" role="img" aria-label={`${artwork.title}; original image pending`}>
@@ -107,7 +110,7 @@ const GraphiteArt = () => {
       {selectedArtwork && (
         <div className="artwork-lightbox" role="presentation" onMouseDown={() => setSelectedArtwork(null)}>
           <button type="button" onClick={() => setSelectedArtwork(null)} aria-label="Close artwork viewer">×</button>
-          <img src={selectedArtwork.image} alt={selectedArtwork.alt} onMouseDown={(event) => event.stopPropagation()} />
+          <img src={resolvePublicAsset(selectedArtwork.image)} alt={selectedArtwork.alt} onMouseDown={(event) => event.stopPropagation()} />
           <p>{selectedArtwork.title} · {selectedArtwork.medium}</p>
         </div>
       )}

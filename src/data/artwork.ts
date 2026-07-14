@@ -16,7 +16,7 @@ export const artworks: Artwork[] = [
   {
     id: "portrait-1",
     title: "Graphite Portrait 01 — title to be added",
-    image: "/art/portrait-1.webp",
+    image: "art/portrait-1.webp",
     alt: "Varun Reddy's first realistic graphite portrait",
     completionTime: "To be added",
     medium: "Graphite pencil",
@@ -25,7 +25,7 @@ export const artworks: Artwork[] = [
   {
     id: "portrait-2",
     title: "Graphite Portrait 02 — title to be added",
-    image: "/art/portrait-2.webp",
+    image: "art/portrait-2.webp",
     alt: "Varun Reddy's second realistic graphite portrait",
     completionTime: "To be added",
     medium: "Graphite pencil",
@@ -34,7 +34,7 @@ export const artworks: Artwork[] = [
   {
     id: "portrait-3",
     title: "Graphite Portrait 03 — title to be added",
-    image: "/art/portrait-3.webp",
+    image: "art/portrait-3.webp",
     alt: "Varun Reddy's third realistic graphite portrait",
     completionTime: "To be added",
     medium: "Graphite pencil",

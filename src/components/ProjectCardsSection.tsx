@@ -10,104 +10,107 @@ import {
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { projects, type SecurityProject } from "../data/projects";
+import { resolvePublicAsset } from "../utils/resolvePublicAsset";
+import GlassOrbs from "./GlassOrbs";
 import "./styles/WhatIDo.css";
 import "./styles/FloatingBubbleCard.css";
 
 gsap.registerPlugin(ScrollTrigger);
 
-type ImageViewerState = {
+type LightboxState = {
   projectIndex: number;
   screenshotIndex: number;
-};
+} | null;
 
 const wrapIndex = (index: number, length: number) =>
   (index + length) % length;
 
 const ProjectCardsSection = () => {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const stageRef = useRef<HTMLDivElement>(null);
+  const projectStageRef = useRef<HTMLDivElement>(null);
+  const firstStepRef = useRef<HTMLDivElement>(null);
+  const secondStepRef = useRef<HTMLDivElement>(null);
+  const firstCardRef = useRef<HTMLElement>(null);
+  const secondCardRef = useRef<HTMLElement>(null);
   const imageCloseRef = useRef<HTMLButtonElement>(null);
   const demoCloseRef = useRef<HTMLButtonElement>(null);
   const lastFocusedElementRef = useRef<HTMLElement | null>(null);
   const touchStartXRef = useRef<number | null>(null);
-  const [activeCardIndex, setActiveCardIndex] = useState(0);
-  const [stackedLayout, setStackedLayout] = useState(() =>
-    typeof window !== "undefined"
-      ? window.matchMedia("(min-width: 901px)").matches
-      : true
-  );
   const [screenshotIndexes, setScreenshotIndexes] = useState<
     Record<string, number>
   >(() => Object.fromEntries(projects.map((project) => [project.id, 0])));
-  const [imageViewer, setImageViewer] = useState<ImageViewerState | null>(null);
+  const [lightbox, setLightbox] = useState<LightboxState>(null);
+  const [lightboxLoading, setLightboxLoading] = useState(false);
+  const [lightboxError, setLightboxError] = useState(false);
   const [demoProject, setDemoProject] = useState<SecurityProject | null>(null);
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(min-width: 901px)");
-    const updateLayout = () => {
-      setStackedLayout(mediaQuery.matches);
-      if (!mediaQuery.matches) setActiveCardIndex(0);
-    };
-
-    updateLayout();
-    mediaQuery.addEventListener("change", updateLayout);
-    return () => mediaQuery.removeEventListener("change", updateLayout);
-  }, []);
-
   useLayoutEffect(() => {
-    const section = sectionRef.current;
-    const stage = stageRef.current;
-    if (!section || !stage) return;
+    const projectStage = projectStageRef.current;
+    const firstStep = firstStepRef.current;
+    const secondStep = secondStepRef.current;
+    const firstCard = firstCardRef.current;
+    const secondCard = secondCardRef.current;
+    if (!projectStage || !firstStep || !secondStep || !firstCard || !secondCard) {
+      return;
+    }
 
-    const media = gsap.matchMedia();
     const context = gsap.context(() => {
-      media.add("(min-width: 901px)", () => {
-        const cards = gsap.utils.toArray<HTMLElement>(".project-card", section);
-        if (cards.length < 2) return;
+      if (!window.matchMedia("(min-width: 901px)").matches) {
+        return;
+      }
 
-        setActiveCardIndex(0);
-        gsap.set(cards[0], { zIndex: 2, transformOrigin: "50% 50%" });
-        gsap.set(cards[1], {
-          zIndex: 3,
-          xPercent: 7,
-          yPercent: 88,
-          transformOrigin: "50% 50%",
-        });
+      gsap.fromTo(
+        firstCard,
+        { y: 70, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          ease: "none",
+          scrollTrigger: {
+            id: "project-card-one-enter",
+            trigger: firstStep,
+            start: "top 84%",
+            end: "top 30%",
+            scrub: 0.8,
+          },
+        }
+      );
 
-        gsap
-          .timeline({
-            scrollTrigger: {
-              id: "portfolio-project-card-stack",
-              trigger: stage,
-              start: "top 16%",
-              end: "bottom 84%",
-              scrub: 0.8,
-              invalidateOnRefresh: true,
-              onUpdate: (self) => {
-                const nextActiveIndex = self.progress < 0.5 ? 0 : 1;
-                setActiveCardIndex((currentIndex) =>
-                  currentIndex === nextActiveIndex
-                    ? currentIndex
-                    : nextActiveIndex
-                );
-              },
-            },
-          })
-          .to(
-            cards[0],
-            { scale: 0.955, yPercent: -4, opacity: 0.64, ease: "none" },
-            0
-          )
-          .to(
-            cards[1],
-            { xPercent: 0, yPercent: 0, opacity: 1, ease: "none" },
-            0
-          );
+      gsap.fromTo(
+        secondCard,
+        { y: 170, opacity: 0.15, scale: 0.97 },
+        {
+          y: 0,
+          opacity: 1,
+          scale: 1,
+          ease: "none",
+          scrollTrigger: {
+            id: "project-card-two-enter",
+            trigger: secondStep,
+            start: "top 90%",
+            end: "top 24%",
+            scrub: 0.8,
+          },
+        }
+      );
+
+      gsap.to(firstCard, {
+        y: -80,
+        scale: 0.95,
+        opacity: 0.48,
+        ease: "none",
+        scrollTrigger: {
+          id: "project-card-one-recede",
+          trigger: secondStep,
+          start: "top 88%",
+          end: "top 28%",
+          scrub: 0.8,
+        },
       });
-    }, section);
+
+      ScrollTrigger.refresh();
+    }, projectStage);
 
     return () => {
-      media.revert();
       context.revert();
     };
   }, []);
@@ -138,15 +141,17 @@ const ProjectCardsSection = () => {
     []
   );
 
-  const moveImageViewer = useCallback((direction: number) => {
-    setImageViewer((currentViewer) => {
-      if (!currentViewer) return null;
+  const moveLightbox = useCallback((direction: number) => {
+    setLightboxLoading(true);
+    setLightboxError(false);
+    setLightbox((currentLightbox) => {
+      if (!currentLightbox) return null;
       const screenshotCount =
-        projects[currentViewer.projectIndex].screenshots.length;
+        projects[currentLightbox.projectIndex].screenshots.length;
       return {
-        ...currentViewer,
+        ...currentLightbox,
         screenshotIndex: wrapIndex(
-          currentViewer.screenshotIndex + direction,
+          currentLightbox.screenshotIndex + direction,
           screenshotCount
         ),
       };
@@ -157,8 +162,10 @@ const ProjectCardsSection = () => {
     window.requestAnimationFrame(() => lastFocusedElementRef.current?.focus());
   }, []);
 
-  const closeImageViewer = useCallback(() => {
-    setImageViewer(null);
+  const closeLightbox = useCallback(() => {
+    setLightbox(null);
+    setLightboxLoading(false);
+    setLightboxError(false);
     restoreFocus();
   }, [restoreFocus]);
 
@@ -167,13 +174,15 @@ const ProjectCardsSection = () => {
     restoreFocus();
   }, [restoreFocus]);
 
+  const lightboxOpen = lightbox !== null;
+
   useEffect(() => {
-    if (!imageViewer) return;
+    if (!lightboxOpen) return;
     const originalOverflow = document.body.style.overflow;
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeImageViewer();
-      if (event.key === "ArrowLeft") moveImageViewer(-1);
-      if (event.key === "ArrowRight") moveImageViewer(1);
+      if (event.key === "Escape") closeLightbox();
+      if (event.key === "ArrowLeft") moveLightbox(-1);
+      if (event.key === "ArrowRight") moveLightbox(1);
     };
 
     document.body.style.overflow = "hidden";
@@ -183,7 +192,7 @@ const ProjectCardsSection = () => {
       document.body.style.overflow = originalOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [closeImageViewer, imageViewer, moveImageViewer]);
+  }, [closeLightbox, lightboxOpen, moveLightbox]);
 
   useEffect(() => {
     if (!demoProject) return;
@@ -201,13 +210,15 @@ const ProjectCardsSection = () => {
     };
   }, [closeDemo, demoProject]);
 
-  const openImageViewer = (
+  const openLightbox = (
     projectIndex: number,
     screenshotIndex: number,
     event: ReactMouseEvent<HTMLButtonElement>
   ) => {
     lastFocusedElementRef.current = event.currentTarget;
-    setImageViewer({ projectIndex, screenshotIndex });
+    setLightboxLoading(true);
+    setLightboxError(false);
+    setLightbox({ projectIndex, screenshotIndex });
   };
 
   const openDemo = (
@@ -227,60 +238,58 @@ const ProjectCardsSection = () => {
     const touchEndX = event.changedTouches[0]?.clientX ?? touchStartXRef.current;
     const distance = touchEndX - touchStartXRef.current;
     touchStartXRef.current = null;
-    if (Math.abs(distance) >= 45) moveImageViewer(distance > 0 ? -1 : 1);
+    if (Math.abs(distance) >= 45) moveLightbox(distance > 0 ? -1 : 1);
   };
 
-  const viewerProject = imageViewer
-    ? projects[imageViewer.projectIndex]
-    : null;
-  const viewerScreenshot =
-    imageViewer && viewerProject
-      ? viewerProject.screenshots[imageViewer.screenshotIndex]
+  const lightboxProject = lightbox ? projects[lightbox.projectIndex] : null;
+  const lightboxScreenshot =
+    lightbox && lightboxProject
+      ? lightboxProject.screenshots[lightbox.screenshotIndex]
       : null;
 
   return (
     <>
-      <div className="whatIDO" id="projects" ref={sectionRef}>
+      <div className="whatIDO" id="projects">
         <div className="what-box">
           <h2 className="title project-section-title">PROJECTS</h2>
         </div>
         <div className="what-box">
-          <div className="what-box-in project-stack-stage" ref={stageRef}>
-            <div className="project-stack-sticky">
-              {projects.map((project, projectIndex) => {
-                const screenshotIndex = screenshotIndexes[project.id] ?? 0;
-                const screenshot = project.screenshots[screenshotIndex];
-                const isInteractive =
-                  !stackedLayout || projectIndex === activeCardIndex;
-                const technologies = project.technology
-                  .split(/,|\sand\s/i)
-                  .map((technology) => technology.trim())
-                  .filter(Boolean);
+          <div className="what-box-in project-scroll-stage" ref={projectStageRef}>
+            {projects.map((project, projectIndex) => {
+              const screenshotIndex = screenshotIndexes[project.id] ?? 0;
+              const screenshot = project.screenshots[screenshotIndex];
+              const technologies = project.technology
+                .split(/,|\sand\s/i)
+                .map((technology) => technology.trim())
+                .filter(Boolean);
 
-                return (
+              return (
+                <div
+                  className={`project-card-step project-card-step-${
+                    projectIndex === 0 ? "first" : "second"
+                  }`}
+                  key={project.id}
+                  ref={projectIndex === 0 ? firstStepRef : secondStepRef}
+                >
                   <article
-                    className={`what-content project-card floating-glass-card ${
-                      isInteractive ? "is-active" : "is-inactive"
-                    }`}
-                    key={project.id}
-                    aria-hidden={stackedLayout && !isInteractive ? true : undefined}
+                    className="what-content project-card floating-glass-card"
+                    ref={projectIndex === 0 ? firstCardRef : secondCardRef}
                   >
+                    <GlassOrbs />
                     <div className="project-card-media">
                       <button
                         className="project-screenshot-button"
                         type="button"
                         onClick={(event) =>
-                          openImageViewer(projectIndex, screenshotIndex, event)
+                          openLightbox(projectIndex, screenshotIndex, event)
                         }
                         aria-label={`Open screenshot ${screenshotIndex + 1} of ${
                           project.screenshots.length
                         } for ${project.title}`}
-                        disabled={!isInteractive}
-                        tabIndex={isInteractive ? 0 : -1}
                       >
                         <img
                           key={`${project.id}-${screenshotIndex}`}
-                          src={screenshot.src}
+                          src={resolvePublicAsset(screenshot.src)}
                           alt={screenshot.alt}
                           loading="lazy"
                         />
@@ -290,8 +299,6 @@ const ProjectCardsSection = () => {
                         type="button"
                         aria-label="Previous screenshot"
                         onClick={() => moveScreenshot(project, -1)}
-                        disabled={!isInteractive}
-                        tabIndex={isInteractive ? 0 : -1}
                       >
                         <span aria-hidden="true">‹</span>
                       </button>
@@ -300,8 +307,6 @@ const ProjectCardsSection = () => {
                         type="button"
                         aria-label="Next screenshot"
                         onClick={() => moveScreenshot(project, 1)}
-                        disabled={!isInteractive}
-                        tabIndex={isInteractive ? 0 : -1}
                       >
                         <span aria-hidden="true">›</span>
                       </button>
@@ -311,11 +316,9 @@ const ProjectCardsSection = () => {
                             key={item.src}
                             className={index === screenshotIndex ? "is-current" : ""}
                             type="button"
-                            aria-label={`Show screenshot ${index + 1}: ${item.alt}`}
+                            aria-label={`Show screenshot ${index + 1}: ${item.caption}`}
                             aria-current={index === screenshotIndex ? "true" : undefined}
                             onClick={() => selectScreenshot(project, index)}
-                            disabled={!isInteractive}
-                            tabIndex={isInteractive ? 0 : -1}
                           />
                         ))}
                       </div>
@@ -324,7 +327,7 @@ const ProjectCardsSection = () => {
                       </span>
                       <span className="project-number">{project.number}</span>
                     </div>
-                    <div className="what-content-in project-card-body">
+                    <div className="what-content-in project-card-body project-card-content">
                       <p className="project-category">{project.category}</p>
                       <h3>{project.title}</h3>
                       <p className="what-project-description">{project.description}</p>
@@ -348,13 +351,11 @@ const ProjectCardsSection = () => {
                           ))}
                         </ul>
                       </div>
-                      <div className="what-actions">
+                      <div className="what-actions project-card-actions">
                         <button
                           className="project-action project-action-primary"
                           type="button"
                           onClick={(event) => openDemo(project, event)}
-                          disabled={!isInteractive}
-                          tabIndex={isInteractive ? 0 : -1}
                         >
                           View Demo
                         </button>
@@ -363,33 +364,32 @@ const ProjectCardsSection = () => {
                           href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          tabIndex={isInteractive ? 0 : -1}
                         >
                           GitHub
                         </a>
                       </div>
                     </div>
                   </article>
-                );
-              })}
-            </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {viewerProject && viewerScreenshot && imageViewer && (
+      {lightbox && lightboxProject && lightboxScreenshot && (
         <div
           className="project-lightbox-backdrop"
           role="presentation"
           onMouseDown={(event) => {
-            if (event.target === event.currentTarget) closeImageViewer();
+            if (event.target === event.currentTarget) closeLightbox();
           }}
         >
           <section
-            className="project-lightbox floating-glass-card"
+            className="project-lightbox"
             role="dialog"
             aria-modal="true"
-            aria-labelledby="project-lightbox-caption"
+            aria-label={`${lightboxProject.title} screenshot viewer`}
             onMouseDown={(event) => event.stopPropagation()}
             onTouchStart={handleTouchStart}
             onTouchEnd={handleTouchEnd}
@@ -398,7 +398,7 @@ const ProjectCardsSection = () => {
               ref={imageCloseRef}
               className="project-lightbox-close"
               type="button"
-              onClick={closeImageViewer}
+              onClick={closeLightbox}
               aria-label="Close screenshot viewer"
             >
               ×
@@ -406,25 +406,57 @@ const ProjectCardsSection = () => {
             <button
               className="project-lightbox-arrow project-lightbox-arrow-previous"
               type="button"
-              onClick={() => moveImageViewer(-1)}
+              onClick={() => moveLightbox(-1)}
               aria-label="Previous screenshot"
             >
               ‹
             </button>
-            <figure>
-              <img src={viewerScreenshot.src} alt={viewerScreenshot.alt} />
-              <figcaption id="project-lightbox-caption">
-                <strong>{viewerProject.title}</strong>
-                <span>{viewerScreenshot.alt}</span>
+            <figure className="project-lightbox-figure">
+              <div className="project-lightbox-image-wrapper">
+                {lightboxLoading && !lightboxError && (
+                  <div className="project-lightbox-loading" role="status">
+                    Loading screenshot…
+                  </div>
+                )}
+                {lightboxError ? (
+                  <p className="project-lightbox-error" role="alert">
+                    Unable to load this screenshot.
+                  </p>
+                ) : (
+                  <img
+                    key={`${lightboxProject.id}-${lightbox.screenshotIndex}`}
+                    className={`project-lightbox-image${
+                      lightboxLoading ? " is-loading" : ""
+                    }`}
+                    src={resolvePublicAsset(lightboxScreenshot.src)}
+                    alt={lightboxScreenshot.alt}
+                    onLoad={() => {
+                      setLightboxLoading(false);
+                      setLightboxError(false);
+                    }}
+                    onError={(event) => {
+                      console.error(
+                        "Failed to load lightbox screenshot:",
+                        event.currentTarget.src
+                      );
+                      setLightboxLoading(false);
+                      setLightboxError(true);
+                    }}
+                  />
+                )}
+              </div>
+              <figcaption className="project-lightbox-caption">
+                <strong>{lightboxProject.title}</strong>
+                <span>{lightboxScreenshot.caption}</span>
                 <small>
-                  {imageViewer.screenshotIndex + 1} / {viewerProject.screenshots.length}
+                  {lightbox.screenshotIndex + 1} / {lightboxProject.screenshots.length}
                 </small>
               </figcaption>
             </figure>
             <button
               className="project-lightbox-arrow project-lightbox-arrow-next"
               type="button"
-              onClick={() => moveImageViewer(1)}
+              onClick={() => moveLightbox(1)}
               aria-label="Next screenshot"
             >
               ›
@@ -448,6 +480,7 @@ const ProjectCardsSection = () => {
             aria-labelledby="project-demo-title"
             onMouseDown={(event) => event.stopPropagation()}
           >
+            <GlassOrbs />
             <button
               ref={demoCloseRef}
               className="project-dialog-close"
@@ -465,7 +498,10 @@ const ProjectCardsSection = () => {
               playsInline
               preload="metadata"
             >
-              <source src={demoProject.demoUrl} type="video/mp4" />
+              <source
+                src={resolvePublicAsset(demoProject.demoVideo)}
+                type="video/mp4"
+              />
               Your browser does not support this project demo video.
             </video>
           </section>

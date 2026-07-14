@@ -1,6 +1,8 @@
 import "./styles/Career.css";
 import "./styles/FloatingBubbleCard.css";
 import { certifications } from "../data/certifications";
+import { resolvePublicAsset } from "../utils/resolvePublicAsset";
+import GlassOrbs from "./GlassOrbs";
 
 const Career = () => {
   return (
@@ -15,6 +17,7 @@ const Career = () => {
           </div>
           {certifications.map((certificate) => (
             <div key={certificate.title} className="career-info-box floating-glass-card">
+              <GlassOrbs />
               <div className="career-info-in">
                 <div className="career-role">
                   <h4>{certificate.title}</h4>
@@ -25,7 +28,7 @@ const Career = () => {
               <div className="certificate-details">
                 <p>{certificate.details}</p>
                 {certificate.finalProject && <p><strong>Final project:</strong> {certificate.finalProject}</p>}
-                <a href={certificate.certificateUrl} target="_blank" rel="noopener noreferrer" data-cursor="disable">View certificate</a>
+                <a href={resolvePublicAsset(certificate.certificateUrl)} target="_blank" rel="noopener noreferrer" data-cursor="disable">View certificate</a>
               </div>
             </div>
           ))}
