@@ -74,7 +74,7 @@ const GraphiteArt = () => {
           </div>
           <div className="work-flex">
             {artworks.map((artwork, index) => (
-              <article className="work-box floating-bubble-card" key={artwork.id}>
+              <article className="work-box floating-glass-card" key={artwork.id}>
                 <div className="work-info">
                   <div className="work-title">
                     <h3>0{index + 1}</h3>

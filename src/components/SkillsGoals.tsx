@@ -41,7 +41,7 @@ const SkillsGoals = () => {
           {skillRows.map((row, rowIndex) => (
             <div key={rowIndex} className="techstack-row">
               {row.map((skill) => (
-                <div key={skill.name} className="techstack-item skill-item floating-bubble-card" title={`${skill.name} — ${skill.level}`}>
+                <div key={skill.name} className="techstack-item skill-item floating-glass-card" title={`${skill.name} — ${skill.level}`}>
                   <span className="skill-mark" aria-hidden="true">{skill.name.slice(0, 2).toUpperCase()}</span>
                   <span>{skill.name}</span>
                   <small>{skill.level}</small>
@@ -52,12 +52,12 @@ const SkillsGoals = () => {
         </div>
 
         <div className="goals-grid">
-          <article className="goal-column floating-bubble-card">
+          <article className="goal-column floating-glass-card">
             <p className="goal-kicker">Next steps</p>
             <h3>Short-term goals</h3>
             <ul>{goals.shortTerm.map((goal) => <li key={goal}>{goal}</li>)}</ul>
           </article>
-          <article className="goal-column floating-bubble-card">
+          <article className="goal-column floating-glass-card">
             <p className="goal-kicker">Long view</p>
             <h3>Long-term goals</h3>
             <ul>{goals.longTerm.map((goal) => <li key={goal}>{goal}</li>)}</ul>

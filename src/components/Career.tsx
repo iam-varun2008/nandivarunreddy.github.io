@@ -14,7 +14,7 @@ const Career = () => {
             <div className="career-dot"></div>
           </div>
           {certifications.map((certificate) => (
-            <div key={certificate.title} className="career-info-box floating-bubble-card">
+            <div key={certificate.title} className="career-info-box floating-glass-card">
               <div className="career-info-in">
                 <div className="career-role">
                   <h4>{certificate.title}</h4>

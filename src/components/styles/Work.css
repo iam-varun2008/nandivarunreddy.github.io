@@ -10,7 +10,10 @@
 
 .work-section {
   transition: 0s;
-  height: 100vh;
+  height: auto;
+  min-height: 100vh;
+  padding: clamp(18px, 4vh, 44px) 0 clamp(34px, 6vh, 72px);
+  overflow: visible;
   box-sizing: border-box;
   will-change: transform;
 }
@@ -19,17 +22,22 @@
   margin: auto;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
+  min-height: calc(100vh - 90px);
+  overflow: visible;
   align-content: stretch;
 }
 
 .work-flex {
   width: 100%;
   display: flex;
-  height: 100%;
+  height: auto;
+  min-height: 0;
   margin-left: -80px;
-  padding-right: 120px;
+  padding: 12px 120px 36px 0;
   position: relative;
+  align-items: stretch;
+  overflow: visible;
 }
 
 .work-box {
@@ -358,9 +366,13 @@
   gap: 40px;
 }
 
+.work-heading h2 {
+  margin-top: clamp(28px, 6vh, 72px);
+}
+
 .work-intro {
   width: min(580px, 50%);
-  margin: 0 0 38px;
+  margin: 0 0 24px;
   color: rgba(255, 255, 255, 0.65);
   font-size: 14px;
   line-height: 1.6;
@@ -377,7 +389,9 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  min-height: 260px;
+  min-height: clamp(190px, 27vh, 280px);
+  aspect-ratio: 4 / 3;
+  flex-shrink: 0;
   border: 1px solid rgba(255, 255, 255, 0.16);
   background:
     linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(194, 164, 255, 0.08)),
@@ -460,23 +474,27 @@
 }
 
 /* Rounded graphite cards, preserving the existing horizontal art layout. */
-.work-box.floating-bubble-card {
+.work-box.floating-glass-card {
   width: 560px;
+  height: auto;
+  min-height: 0;
+  align-self: stretch;
   margin: 12px 14px;
-  padding: clamp(30px, 4vw, 54px);
+  padding: clamp(26px, 3.2vw, 46px);
   border-right: 1px solid rgba(196, 154, 255, 0.22);
-  gap: 30px;
+  gap: clamp(20px, 2.4vh, 30px);
+  box-sizing: border-box;
 }
 
-.work-box.floating-bubble-card .work-info,
-.work-box.floating-bubble-card .artwork-preview,
-.work-box.floating-bubble-card .artwork-placeholder {
+.work-box.floating-glass-card .work-info,
+.work-box.floating-glass-card .artwork-preview,
+.work-box.floating-glass-card .artwork-placeholder {
   position: relative;
   z-index: 1;
 }
 
-.work-box.floating-bubble-card .artwork-preview,
-.work-box.floating-bubble-card .artwork-placeholder {
+.work-box.floating-glass-card .artwork-preview,
+.work-box.floating-glass-card .artwork-placeholder {
   overflow: hidden;
   border-color: rgba(218, 202, 225, 0.18);
   border-radius: 22px;
@@ -488,7 +506,7 @@
     0 16px 42px rgba(0, 0, 0, 0.28);
 }
 
-.work-box.floating-bubble-card .artwork-preview img {
+.work-box.floating-glass-card .artwork-preview img {
   object-fit: contain;
   padding: 8px;
   box-sizing: border-box;
@@ -496,24 +514,79 @@
   transition: transform 0.45s ease, filter 0.45s ease;
 }
 
-.work-box.floating-bubble-card .artwork-preview:hover img {
+.work-box.floating-glass-card .artwork-preview:hover img {
   transform: scale(1.018);
   filter: grayscale(1) contrast(1.14);
 }
 
 @media only screen and (max-width: 1400px) {
-  .work-box.floating-bubble-card {
+  .work-box.floating-glass-card {
     width: 460px;
-    padding: 34px;
+    padding: 30px;
   }
 }
 
 @media only screen and (max-width: 768px) {
-  .work-box.floating-bubble-card {
+  .work-box.floating-glass-card {
     width: 100%;
+    height: auto;
+    min-height: 0;
     margin: 10px 0;
     padding: 26px 20px;
     border-bottom: 1px solid rgba(196, 154, 255, 0.22);
     gap: 22px;
+  }
+}
+
+@media only screen and (max-height: 800px) and (min-width: 769px) {
+  .work-section {
+    padding-top: 8px;
+    padding-bottom: 30px;
+  }
+
+  .work-heading h2 {
+    margin-top: 24px;
+    margin-bottom: 18px;
+    font-size: 56px;
+  }
+
+  .work-intro {
+    margin-bottom: 16px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .work-box.floating-glass-card {
+    padding: 24px 28px;
+    gap: 18px;
+  }
+
+  .artwork-placeholder,
+  .artwork-preview {
+    min-height: 185px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .work-section {
+    padding: 20px 0 72px;
+    overflow: visible;
+  }
+
+  .work-container,
+  .work-flex {
+    min-height: 0;
+    overflow: visible;
+  }
+
+  .work-flex {
+    padding: 0 0 28px;
+    gap: 18px;
+  }
+
+  .artwork-placeholder,
+  .artwork-preview {
+    min-height: 220px;
+    aspect-ratio: 4 / 3;
   }
 }
