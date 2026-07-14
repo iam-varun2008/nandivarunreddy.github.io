@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./styles/Loading.css";
 import { useLoading } from "../context/LoadingProvider";
 
@@ -8,46 +8,53 @@ import Marquee from "react-fast-marquee";
 const Loading = ({ percent }: { percent: number }) => {
   const { setIsLoading } = useLoading();
   const [loaded, setLoaded] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [clicked, setClicked] = useState(false);
+  const finishStartedRef = useRef(false);
+  const exitTimerRef = useRef<number | undefined>(undefined);
+
+  const finishLoading = useCallback(() => {
+    if (finishStartedRef.current) return;
+    finishStartedRef.current = true;
+    setClicked(true);
+
+    exitTimerRef.current = window.setTimeout(() => {
+      const revealPortfolio = () => {
+        document.documentElement.dataset.loaderComplete = "true";
+        window.dispatchEvent(new Event("portfolio:loader-complete"));
+        setIsLoading(false);
+      };
+
+      import("./utils/initialFX")
+        .then((module) => module.initialFX?.())
+        .catch(() => undefined)
+        .finally(revealPortfolio);
+    }, 650);
+  }, [setIsLoading]);
 
   useEffect(() => {
     if (percent < 100) return;
-    let completeTimer: number | undefined;
     const loadedTimer = window.setTimeout(() => {
       setLoaded(true);
-      completeTimer = window.setTimeout(() => {
-        setIsLoaded(true);
-      }, 1000);
-    }, 600);
+    }, 80);
+    const completeTimer = window.setTimeout(finishLoading, 300);
+
     return () => {
       window.clearTimeout(loadedTimer);
       window.clearTimeout(completeTimer);
     };
-  }, [percent]);
+  }, [finishLoading, percent]);
 
   useEffect(() => {
-    let cancelled = false;
-    let exitTimer: number | undefined;
-    import("./utils/initialFX").then((module) => {
-      if (isLoaded && !cancelled) {
-        setClicked(true);
-        exitTimer = window.setTimeout(() => {
-          if (cancelled) return;
-          if (module.initialFX) {
-            module.initialFX();
-          }
-          document.documentElement.dataset.loaderComplete = "true";
-          window.dispatchEvent(new Event("portfolio:loader-complete"));
-          setIsLoading(false);
-        }, 900);
-      }
-    });
+    const maximumLoadingTimer = window.setTimeout(() => {
+      setLoaded(true);
+      finishLoading();
+    }, 2500);
+
     return () => {
-      cancelled = true;
-      window.clearTimeout(exitTimer);
+      window.clearTimeout(maximumLoadingTimer);
+      window.clearTimeout(exitTimerRef.current);
     };
-  }, [isLoaded, setIsLoading]);
+  }, [finishLoading]);
 
   function handleMouseMove(e: React.MouseEvent<HTMLElement>) {
     const { currentTarget: target } = e;
@@ -126,7 +133,7 @@ export const setProgress = (setLoading: (value: number) => void) => {
         if (percent > 91) {
           clearInterval(interval);
         }
-      }, 2000);
+      }, 200);
     }
   }, 100);
 
