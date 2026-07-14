@@ -33,7 +33,10 @@ jobs:
         run: npm ci
 
       - name: Build website
-        run: npm run build
+        run: npm run build -- --base=/nandivarunreddy.github.io/
+
+      - name: Adjust public asset paths
+        run: node scripts/fix-github-pages-paths.mjs
 
       - name: Add SPA fallback
         run: cp dist/index.html dist/404.html
