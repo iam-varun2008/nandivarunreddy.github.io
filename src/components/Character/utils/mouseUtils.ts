@@ -36,6 +36,7 @@ export const handleTouchEnd = (
 
 export const handleHeadRotation = (
   headBone: THREE.Object3D,
+  projectPoseProgress: number,
   mouseX: number,
   mouseY: number,
   interpolationX: number,
@@ -44,10 +45,11 @@ export const handleHeadRotation = (
 ) => {
   if (!headBone) return;
   if (window.scrollY < 200) {
+    const cursorRotationStrength = 0.75;
     const maxRotation = Math.PI / 6;
     headBone.rotation.y = lerp(
       headBone.rotation.y,
-      mouseX * maxRotation,
+      mouseX * maxRotation * cursorRotationStrength,
       interpolationY
     );
     let minRotationX = -0.3;
@@ -56,27 +58,32 @@ export const handleHeadRotation = (
       if (mouseY < maxRotationX) {
         headBone.rotation.x = lerp(
           headBone.rotation.x,
-          -mouseY - 0.5 * maxRotation,
+          (-mouseY - 0.5 * maxRotation) * cursorRotationStrength,
           interpolationX
         );
       } else {
         headBone.rotation.x = lerp(
           headBone.rotation.x,
-          -maxRotation - 0.5 * maxRotation,
+          (-maxRotation - 0.5 * maxRotation) * cursorRotationStrength,
           interpolationX
         );
       }
     } else {
       headBone.rotation.x = lerp(
         headBone.rotation.x,
-        -minRotationX - 0.5 * maxRotation,
+        (-minRotationX - 0.5 * maxRotation) * cursorRotationStrength,
         interpolationX
       );
     }
   } else {
     if (window.innerWidth > 1024) {
-      headBone.rotation.x = lerp(headBone.rotation.x, -0.4, 0.03);
-      headBone.rotation.y = lerp(headBone.rotation.y, -0.3, 0.03);
+      headBone.rotation.x = lerp(
+        headBone.rotation.x,
+        0.3 * projectPoseProgress,
+        0.1
+      );
+      headBone.rotation.y = lerp(headBone.rotation.y, 0, 0.1);
+      headBone.rotation.z = lerp(headBone.rotation.z, 0, 0.08);
     }
   }
 };

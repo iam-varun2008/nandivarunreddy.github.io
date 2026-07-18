@@ -619,13 +619,14 @@
   position: relative;
   z-index: 5;
   width: 100%;
+  transform: translateY(-25vh);
 }
 
 .project-title-area .project-section-title {
   position: relative;
   margin: 0;
   color: #f4eef8;
-  font-size: clamp(3.6rem, 6.4vw, 7.2rem);
+  font-size: clamp(4.75rem, 7.5vw, 8.5rem);
   line-height: 0.88;
   letter-spacing: -0.055em;
 }
@@ -899,7 +900,7 @@
   }
 
   .project-title-area .project-section-title {
-    font-size: clamp(3rem, 5.4vw, 4.5rem);
+    font-size: clamp(4rem, 6.2vw, 6rem);
   }
 }
 
@@ -922,6 +923,7 @@
 
   .project-title-area {
     margin-bottom: 36px;
+    transform: none;
   }
 
   .project-title-area .project-section-title {

@@ -45,6 +45,7 @@ const Scene = () => {
       camera.updateProjectionMatrix();
 
       let headBone: THREE.Object3D | null = null;
+      let neckBone: THREE.Object3D | null = null;
       let screenLight: any | null = null;
       let mixer: THREE.AnimationMixer;
 
@@ -52,7 +53,7 @@ const Scene = () => {
 
       const light = setLighting(scene);
       let progress = setProgress((value) => setLoading(value));
-      const { loadCharacter } = setCharacter(renderer, scene, camera);
+      const { loadCharacter } = setCharacter(camera);
 
       loadCharacter().then((gltf) => {
         if (gltf) {
@@ -63,6 +64,7 @@ const Scene = () => {
           setChar(character);
           scene.add(character);
           headBone = character.getObjectByName("spine006") || null;
+          neckBone = character.getObjectByName("spine005") || null;
           screenLight = character.getObjectByName("screenlight") || null;
           progress.loaded().then(() => {
             setTimeout(() => {
@@ -107,11 +109,43 @@ const Scene = () => {
         landingDiv.addEventListener("touchstart", onTouchStart);
         landingDiv.addEventListener("touchend", onTouchEnd);
       }
+      let projectsSection = document.getElementById("projects");
+      const getProjectPoseProgress = () => {
+        projectsSection ||= document.getElementById("projects");
+        if (!projectsSection) return 0;
+
+        const projectsTop =
+          projectsSection.getBoundingClientRect().top + window.scrollY;
+        const transitionStart = projectsTop - window.innerHeight * 0.48;
+        const transitionEnd = projectsTop - window.innerHeight * 0.12;
+
+        return THREE.MathUtils.clamp(
+          (window.scrollY - transitionStart) /
+            (transitionEnd - transitionStart),
+          0,
+          1
+        );
+      };
       const animate = () => {
         requestAnimationFrame(animate);
+        const delta = clock.getDelta();
+        if (mixer) {
+          mixer.update(delta);
+        }
+        const projectPoseProgress = getProjectPoseProgress();
+        if (neckBone && window.scrollY >= 200 && window.innerWidth > 1024) {
+          neckBone.rotation.x = THREE.MathUtils.lerp(
+            neckBone.rotation.x,
+            0,
+            0.12
+          );
+          neckBone.rotation.y = THREE.MathUtils.lerp(neckBone.rotation.y, 0, 0.12);
+          neckBone.rotation.z = THREE.MathUtils.lerp(neckBone.rotation.z, 0, 0.12);
+        }
         if (headBone) {
           handleHeadRotation(
             headBone,
+            projectPoseProgress,
             mouse.x,
             mouse.y,
             interpolation.x,
@@ -119,10 +153,6 @@ const Scene = () => {
             THREE.MathUtils.lerp
           );
           light.setPointLight(screenLight);
-        }
-        const delta = clock.getDelta();
-        if (mixer) {
-          mixer.update(delta);
         }
         renderer.render(scene, camera);
       };
