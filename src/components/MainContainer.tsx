@@ -13,29 +13,34 @@ import AdmissionsCTA from "./AdmissionsCTA";
 import setSplitText from "./utils/splitText";
 
 const MainContainer = ({ children }: PropsWithChildren) => {
-  const [isDesktopView, setIsDesktopView] = useState<boolean>(
-    window.innerWidth > 1024
+  const [isDesktopView, setIsDesktopView] = useState(
+    () => window.matchMedia("(min-width: 1025px)").matches
   );
+
   useEffect(() => {
+    const desktopQuery = window.matchMedia("(min-width: 1025px)");
+    const splitQuery = window.matchMedia("(min-width: 900px)");
     let splitCleanup = setSplitText();
-    let resizeTimer: number | undefined;
-    let splitBreakpoint = window.innerWidth >= 900;
-    const resizeHandler = () => {
-      setIsDesktopView(window.innerWidth > 1024);
-      window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => {
-        const nextSplitBreakpoint = window.innerWidth >= 900;
-        if (nextSplitBreakpoint !== splitBreakpoint) {
-          splitBreakpoint = nextSplitBreakpoint;
-          splitCleanup();
-          splitCleanup = setSplitText();
-        }
-      }, 180);
+    let splitTimer: number | undefined;
+
+    const onDesktopChange = (event: MediaQueryListEvent) => {
+      setIsDesktopView(event.matches);
     };
-    window.addEventListener("resize", resizeHandler);
+    const onSplitChange = () => {
+      window.clearTimeout(splitTimer);
+      splitTimer = window.setTimeout(() => {
+        splitCleanup();
+        splitCleanup = setSplitText();
+      }, 100);
+    };
+
+    desktopQuery.addEventListener("change", onDesktopChange);
+    splitQuery.addEventListener("change", onSplitChange);
+
     return () => {
-      window.clearTimeout(resizeTimer);
-      window.removeEventListener("resize", resizeHandler);
+      window.clearTimeout(splitTimer);
+      desktopQuery.removeEventListener("change", onDesktopChange);
+      splitQuery.removeEventListener("change", onSplitChange);
       splitCleanup();
     };
   }, []);

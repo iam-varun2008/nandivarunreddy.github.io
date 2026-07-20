@@ -68,7 +68,7 @@ const Loading = ({ percent }: { percent: number }) => {
   return (
     <>
       <div className="loading-header">
-        <a href="/#" className="loader-title" data-cursor="disable">
+        <a href={`${import.meta.env.BASE_URL}#`} className="loader-title" data-cursor="disable">
           Varun Reddy
         </a>
         <div className={`loaderGame ${clicked && "loader-out"}`}>
@@ -116,53 +116,76 @@ const Loading = ({ percent }: { percent: number }) => {
 export default Loading;
 
 export const setProgress = (setLoading: (value: number) => void) => {
-  let percent: number = 0;
+  let percent = 0;
   let disposed = false;
+  let interval: number | undefined;
+  let animationFrame: number | undefined;
 
-  let interval = setInterval(() => {
+  const stopTimers = () => {
+    window.clearInterval(interval);
+    window.cancelAnimationFrame(animationFrame ?? 0);
+  };
+
+  interval = window.setInterval(() => {
     if (disposed) return;
+
     if (percent <= 50) {
-      const rand = Math.round(Math.random() * 5);
-      percent = percent + rand;
+      percent = Math.min(percent + Math.round(Math.random() * 5), 55);
       setLoading(percent);
-    } else {
-      clearInterval(interval);
-      interval = setInterval(() => {
-        percent = percent + Math.round(Math.random());
-        setLoading(percent);
-        if (percent > 91) {
-          clearInterval(interval);
-        }
-      }, 200);
+      return;
     }
+
+    window.clearInterval(interval);
+    interval = window.setInterval(() => {
+      if (disposed) return;
+      percent = Math.min(percent + Math.round(Math.random()), 92);
+      setLoading(percent);
+      if (percent >= 92) window.clearInterval(interval);
+    }, 200);
   }, 100);
 
-  function clear() {
-    clearInterval(interval);
-    if (!disposed) setLoading(100);
-  }
+  const clear = () => {
+    stopTimers();
+    if (!disposed) {
+      percent = 100;
+      setLoading(100);
+    }
+  };
 
-  function loaded() {
-    return new Promise<number>((resolve) => {
-      clearInterval(interval);
-      interval = setInterval(() => {
-        if (disposed) {
-          clearInterval(interval);
-          return;
-        }
-        if (percent < 100) {
-          percent++;
+  const loaded = () =>
+    new Promise<number>((resolve) => {
+      window.clearInterval(interval);
+      const startPercent = Math.min(percent, 99);
+      const startTime = performance.now();
+      const duration = Math.max((100 - startPercent) * 18, 140);
+
+      const update = (time: number) => {
+        if (disposed) return;
+        const progress = Math.min((time - startTime) / duration, 1);
+        const nextPercent = Math.min(
+          100,
+          Math.floor(startPercent + (100 - startPercent) * progress)
+        );
+
+        if (nextPercent !== percent) {
+          percent = nextPercent;
           setLoading(percent);
-        } else {
-          resolve(percent);
-          clearInterval(interval);
         }
-      }, 2);
+
+        if (progress < 1) {
+          animationFrame = window.requestAnimationFrame(update);
+        } else {
+          resolve(100);
+        }
+      };
+
+      animationFrame = window.requestAnimationFrame(update);
     });
-  }
-  function dispose() {
+
+  const dispose = () => {
     disposed = true;
-    clearInterval(interval);
-  }
+    stopTimers();
+  };
+
   return { loaded, clear, dispose };
 };

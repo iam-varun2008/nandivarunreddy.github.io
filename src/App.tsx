@@ -1,12 +1,10 @@
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
+import MainContainer from "./components/MainContainer";
+import { LoadingProvider } from "./context/LoadingProvider";
 import "./App.css";
 
 const CharacterModel = lazy(() => import("./components/Character"));
-const MainContainer = lazy(() => import("./components/MainContainer"));
-import { LoadingProvider } from "./context/LoadingProvider";
 
 const App = () => {
   return (
@@ -16,20 +14,16 @@ const App = () => {
           path="/"
           element={
             <LoadingProvider>
-              <Suspense>
-                <MainContainer>
-                  <Suspense>
-                    <CharacterModel />
-                  </Suspense>
-                </MainContainer>
-              </Suspense>
+              <MainContainer>
+                <Suspense fallback={null}>
+                  <CharacterModel />
+                </Suspense>
+              </MainContainer>
             </LoadingProvider>
           }
         />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-      <Analytics />
-      <SpeedInsights />
     </BrowserRouter>
   );
 };

@@ -3,21 +3,30 @@ async function generateAESKey(password: string): Promise<CryptoKey> {
   const hashedPassword = await crypto.subtle.digest("SHA-256", passwordBuffer);
   return crypto.subtle.importKey(
     "raw",
-    hashedPassword.slice(0, 32),
+    hashedPassword,
     { name: "AES-CBC" },
     false,
-    ["encrypt", "decrypt"]
+    ["decrypt"]
   );
 }
 
 export const decryptFile = async (
   url: string,
-  password: string
+  password: string,
+  signal?: AbortSignal
 ): Promise<ArrayBuffer> => {
-  const response = await fetch(url);
+  const response = await fetch(url, { signal });
+  if (!response.ok) {
+    throw new Error(`Unable to load encrypted model (${response.status})`);
+  }
+
   const encryptedData = await response.arrayBuffer();
-  const iv = new Uint8Array(encryptedData.slice(0, 16));
-  const data = encryptedData.slice(16);
+  if (encryptedData.byteLength <= 16) {
+    throw new Error("Encrypted model data is invalid.");
+  }
+
+  const iv = new Uint8Array(encryptedData, 0, 16);
+  const data = new Uint8Array(encryptedData, 16);
   const key = await generateAESKey(password);
   return crypto.subtle.decrypt({ name: "AES-CBC", iv }, key, data);
 };
